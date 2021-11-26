@@ -75,8 +75,8 @@ inflow2 %>%
   filter(nation %in% c("European","Latino")) %>% 
   filter(Edat_q %in% c("25 - 29", "30 - 34", "35 - 39")) %>% 
   filter(Any %in% c(2016,2017,2018)) %>%
-  select(Any, Sexe, BARRI_COD, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI, Casos) %>%
-  group_by(Any, Sexe, BARRI_COD, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI) %>% 
+  select(Any, Sexe, BARRI_COD, nation, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI, Casos) %>%
+  group_by(Any, Sexe, BARRI_COD, nation, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI) %>% 
   summarise(inflow = sum(Casos, na.rm=TRUE)) -> inflow_filtered
 
 other_inflow2 %>% 
@@ -84,8 +84,8 @@ other_inflow2 %>%
   filter(nation %in% c("European","Latino")) %>% 
   filter(Edat_q %in% c("25 - 29", "30 - 34", "35 - 39")) %>% 
   filter(Any %in% c(2016,2017,2018)) %>%
-  select(Any, Sexe, BARRI_COD, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI, Casos) %>% 
-  group_by(Any, Sexe, BARRI_COD, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI) %>% 
+  select(Any, Sexe, BARRI_COD, nation, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI, Casos) %>% 
+  group_by(Any, Sexe, BARRI_COD, nation, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI) %>% 
   summarise(inflow = sum(Casos, na.rm=TRUE)) -> other_inflow_filtered
 
 
@@ -125,9 +125,11 @@ all_inflow %>%
 inflow_unnested %>% 
   select(-c(identif, cases)) %>% 
   rename(aggregate_inflow = inflow) %>% 
-  mutate(ind_inflow = 1) -> inflow_unnested2
+  mutate(ind_inflow = 1) -> inflow_unnested
 
 
+# Checking individual cases per year:
+inflow_unnested %>% group_by(Any, nation) %>% summarise(total = sum(ind_inflow))
   
 
 
