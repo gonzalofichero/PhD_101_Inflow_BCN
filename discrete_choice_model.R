@@ -1,7 +1,5 @@
 # Loading necessary libraries 
 library(tidyverse)
-library(readr)
-
 
 
 # Loading data:
@@ -11,6 +9,9 @@ library(readr)
                        delim = "\t", col_names = TRUE)
   # Grouping Barris with Toni?s definition (for lower count cases)
   grup_barris_table <- read_delim("tabla_conversion_agrupado_barrios.txt", 
+                                  delim = "\t", col_names = TRUE)
+  # Inflow "by defect" to see if the numbers check with Toni's
+  other_inflow <- read_delim("altas_omision_BCN_2011_2018.txt", 
                                   delim = "\t", col_names = TRUE)
   
 # Checking
