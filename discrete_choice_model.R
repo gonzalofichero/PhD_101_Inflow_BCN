@@ -132,4 +132,19 @@ inflow_unnested %>%
 inflow_unnested %>% group_by(Any, nation) %>% summarise(total = sum(ind_inflow))
   
 
+# Taking the Barri's characteristics from EDSD thesis
+barri_char <- read_csv("bcn_full_dataset.csv", col_names = TRUE)
 
+# Renaming to have same names in Barri coding
+barri_char %>% rename(BARRI_COD = BARRI) -> barri_char
+
+glimpse(barri_char)
+
+# Joining both data sets: individual choices + neighborhood characteristics
+disc_choice_df <- inflow_unnested %>% 
+                    left_join(barri_char, by = "BARRI_COD")
+
+# Export to 3 different files to make sure I'm gonna be able to read it in CED
+write_csv(disc_choice_df, "discrete_choice_dataset.csv")
+write_delim(disc_choice_df, "discrete_choice_dataset.txt", delim = "\t")
+write_delim(disc_choice_df, "discrete_choice_dataset_bar.txt", delim = "|")
