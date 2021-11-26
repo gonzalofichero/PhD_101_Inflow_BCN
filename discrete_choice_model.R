@@ -17,6 +17,7 @@ library(tidyverse)
 # Checking
 glimpse(inflow)
 glimpse(grup_barris_table)
+glimpse(other_inflow)
   
   
 # Grouping by into Europeans vs Latinos vs East Europeans:
@@ -26,12 +27,23 @@ inflow %>%
                               as.character(NOM_Naix) %in% c("Argentina", "Veneçuela", "Colòmbia", "Brasil", "Mèxic", "Xile", "Perú", "Equador", "República Dominicana", "Hondures", "Uruguai", "Bolívia", "Paraguai", "Cuba", "Resta América") ~ "Latino",
                               TRUE ~ as.character(NOM_Naix))) -> inflow
 
+other_inflow %>% 
+  mutate(nation = case_when(as.character(NOM_Naix) %in% c("Resta Unió Europea", "Itàlia", "França", "Regne Unir", "Alemanya") ~ "European",
+                            as.character(NOM_Naix) %in% c("Geòrgia", "Resta Europa", "Romania", "Rússia", "Ucraïna") ~ "European.East",
+                            as.character(NOM_Naix) %in% c("Argentina", "Veneçuela", "Colòmbia", "Brasil", "Mèxic", "Xile", "Perú", "Equador", "República Dominicana", "Hondures", "Uruguai", "Bolívia", "Paraguai", "Cuba", "Resta América") ~ "Latino",
+                            TRUE ~ as.character(NOM_Naix))) -> other_inflow
 
-# Adding Grouped Barris from Toni?s definition to compare flows:
+
+# Adding Grouped Barris from Toni's definition to compare flows:
 inflow %>% 
   rename(BARRI_COD = BARRI_dest) %>% 
   mutate(BARRI_COD = as.factor(str_pad(BARRI_COD, width=2, side="left", pad="0"))) %>% 
   left_join(grup_barris_table %>% select(BARRI_COD,BARRI_AGRUP_TONI), by = "BARRI_COD") -> inflow2
+
+other_inflow %>% 
+  rename(BARRI_COD = BARRI_dest) %>% 
+  mutate(BARRI_COD = as.factor(str_pad(BARRI_COD, width=2, side="left", pad="0"))) %>% 
+  left_join(grup_barris_table %>% select(BARRI_COD,BARRI_AGRUP_TONI), by = "BARRI_COD") -> other_inflow2
 
 
 # Need to filter for Latinos + Europeans, 24 to 40 yos, University degree or higher, 
@@ -49,7 +61,15 @@ inflow2 %>%
   group_by(Any, nation) %>% 
   summarise(total = sum(Casos, na.rm=TRUE))
 
--> inflow_foreign
+
+other_inflow2 %>% 
+  filter(Nivell_educ == "Estudis universitaris / CFGS grau superior") %>% 
+  filter(nation %in% c("European","Latino")) %>% 
+  filter(Edat_q %in% c("25 - 29", "30 - 34", "35 - 39")) %>% 
+  filter(Any %in% c(2016,2017,2018)) %>% 
+  group_by(Any, nation) %>% 
+  summarise(total = sum(Casos, na.rm=TRUE))
+
 
 
 
