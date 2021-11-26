@@ -107,8 +107,27 @@ test_ungroup <- all_inflow %>% ungroup() %>% sample_n(1000)
 test_ungroup %>% 
   rowwise %>% 
   mutate( identif = paste(Any,Sexe, BARRI_COD, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI),
-          cases = list(rep(identif,inflow))) %>% 
+          cases = list(rep(identif,inflow))) %>%
   unnest() -> check
+
+# Should be expecting this amount of rows in test data.frame
+test_ungroup %>% summarise(total = sum(inflow))
+
+
+# Now we are going for the real thing:
+all_inflow %>% 
+  rowwise %>% 
+  mutate( identif = paste(Any,Sexe, BARRI_COD, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI),
+          cases = list(rep(identif,inflow))) %>%
+  unnest() -> inflow_unnested
+
+# Correct format to columns and names
+inflow_unnested %>% 
+  select(-c(identif, cases)) %>% 
+  rename(aggregate_inflow = inflow) %>% 
+  mutate(ind_inflow = 1) -> inflow_unnested2
 
 
   
+
+
