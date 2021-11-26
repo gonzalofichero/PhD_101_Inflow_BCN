@@ -100,7 +100,15 @@ rm(inflow, inflow2, other_inflow, other_inflow2, inflow_filtered, other_inflow_f
 # For the discrete choice model, I need to have individual data, even though it's repeated.
 # Let's ungroup the inflow variable in more rows:
 
+set.seed(42)
+test_ungroup <- all_inflow %>% ungroup() %>% sample_n(1000)
 
+
+test_ungroup %>% 
+  rowwise %>% 
+  mutate( identif = paste(Any,Sexe, BARRI_COD, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI),
+          cases = list(rep(identif,inflow))) %>% 
+  unnest() -> check
 
 
   
