@@ -51,8 +51,6 @@ other_inflow %>%
 table(inflow2$Nivell_educ)
 table(inflow2$Edat_q)
 
-
-
 inflow2 %>% 
   filter(Nivell_educ == "Estudis universitaris / CFGS grau superior") %>% 
   filter(nation %in% c("European","Latino")) %>% 
@@ -70,6 +68,37 @@ other_inflow2 %>%
   group_by(Any, nation) %>% 
   summarise(total = sum(Casos, na.rm=TRUE))
 
+
+# After checking that the numbers (more or less) sum up to what I'm expecting, I can add both bases together, after filters
+inflow2 %>%
+  filter(Nivell_educ == "Estudis universitaris / CFGS grau superior") %>% 
+  filter(nation %in% c("European","Latino")) %>% 
+  filter(Edat_q %in% c("25 - 29", "30 - 34", "35 - 39")) %>% 
+  filter(Any %in% c(2016,2017,2018)) %>%
+  select(Any, Sexe, BARRI_COD, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI, Casos) %>%
+  group_by(Any, Sexe, BARRI_COD, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI) %>% 
+  summarise(inflow = sum(Casos, na.rm=TRUE)) -> inflow_filtered
+
+other_inflow2 %>% 
+  filter(Nivell_educ == "Estudis universitaris / CFGS grau superior") %>% 
+  filter(nation %in% c("European","Latino")) %>% 
+  filter(Edat_q %in% c("25 - 29", "30 - 34", "35 - 39")) %>% 
+  filter(Any %in% c(2016,2017,2018)) %>%
+  select(Any, Sexe, BARRI_COD, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI, Casos) %>% 
+  group_by(Any, Sexe, BARRI_COD, NOM_Naix, Nom_Barri_dest, BARRI_AGRUP_TONI) %>% 
+  summarise(inflow = sum(Casos, na.rm=TRUE)) -> other_inflow_filtered
+
+
+
+all_inflow <- rbind(inflow_filtered, other_inflow_filtered)
+
+# Removing non necessary data from RAM
+rm(inflow, inflow2, other_inflow, other_inflow2, inflow_filtered, other_inflow_filtered)
+
+
+
+# For the discrete choice model, I need to have individual data, even though it's repeated.
+# Let's ungroup the inflow variable in more rows:
 
 
 
