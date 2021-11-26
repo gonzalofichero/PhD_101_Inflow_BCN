@@ -1,15 +1,16 @@
-# Loading neccessary libraries 
+# Loading necessary libraries 
 library(tidyverse)
+library(readr)
 
 
 
 # Loading data:
 
   # Inflow to BCN
-  inflow <- read_delim("C:/Users/ggarcia/Desktop/PhD GG/02 - Dissertation/101_Inflow_BCN/inflows_BCN_2011_2018.txt", 
+  inflow <- read_delim("inflows_BCN_2011_2018.txt", 
                        delim = "\t", col_names = TRUE)
-  # Grouping Barris with Toni´s definition (for lower count cases)
-  grup_barris_table <- read_delim("C:/Users/ggarcia/Desktop/PhD GG/02 - Dissertation/101_Inflow_BCN/tabla_conversion_agrupado_barrios.txt", 
+  # Grouping Barris with Toni?s definition (for lower count cases)
+  grup_barris_table <- read_delim("tabla_conversion_agrupado_barrios.txt", 
                                   delim = "\t", col_names = TRUE)
   
 # Checking
@@ -19,13 +20,13 @@ glimpse(grup_barris_table)
   
 # Grouping by into Europeans vs Latinos vs East Europeans:
 inflow %>% 
-    mutate(nation = case_when(as.character(NOM_Naix) %in% c("Resta Unió Europea", "Itàlia", "França", "Regne Unir", "Alemanya") ~ "European",
-                              as.character(NOM_Naix) %in% c("Geòrgia", "Resta Europa", "Romania", "Rússia", "Ucraïna") ~ "European.East",
-                              as.character(NOM_Naix) %in% c("Argentina", "Veneçuela", "Colòmbia", "Brasil", "Mèxic", "Xile", "Perú", "Equador", "República Dominicana", "Hondures", "Uruguai", "Bolívia", "Paraguai", "Cuba", "Resta América") ~ "Latino",
+    mutate(nation = case_when(as.character(NOM_Naix) %in% c("Resta UniÃ³ Europea", "ItÃ lia", "FranÃ§a", "Regne Unir", "Alemanya") ~ "European",
+                              as.character(NOM_Naix) %in% c("GeÃ²rgia", "Resta Europa", "Romania", "RÃºssia", "UcraÃ¯na") ~ "European.East",
+                              as.character(NOM_Naix) %in% c("Argentina", "VeneÃ§uela", "ColÃ²mbia", "Brasil", "MÃ¨xic", "Xile", "PerÃº", "Equador", "RepÃºblica Dominicana", "Hondures", "Uruguai", "BolÃ­via", "Paraguai", "Cuba", "Resta AmÃ©rica") ~ "Latino",
                               TRUE ~ as.character(NOM_Naix))) -> inflow
 
 
-# Adding Grouped Barris from Toni´s definition to compare flows:
+# Adding Grouped Barris from Toni?s definition to compare flows:
 inflow %>% 
   rename(BARRI_COD = BARRI_dest) %>% 
   mutate(BARRI_COD = as.factor(str_pad(BARRI_COD, width=2, side="left", pad="0"))) %>% 
