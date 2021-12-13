@@ -1,7 +1,7 @@
 library(tidyverse)
 library(mlogit)
 
-setwd("C:/Users/ggarcia/Desktop/PhD GG/10 - Data/01 - Paper 1")
+#setwd("C:/Users/ggarcia/Desktop/PhD GG/10 - Data/01 - Paper 1")
 
 bcn <- read_delim("discrete_choice_dataset_bar.txt", 
                      delim = "|", col_names = TRUE)
@@ -54,15 +54,13 @@ try1 <- mlogit.data(sample1,
                     shape='long',
                     alt.var= "BARRI_COD",
                     choice = "ind_choice",
-                    idx = "id_individual"
-                    #,
-                    #drop.index = TRUE
+                    id.var = "id_individual"
                     )
 
 try2 <- dfidx(sample1, shape = "long", choice = "ind_choice",
               idx = list(c("ind_choice","id_individual")))
 
-try2 <- dfidx(sample1, idx = c("id_individual","BARRI_COD"))
+try2 <- dfidx(sample1, idx = c("id_individual","BARRI_COD"), drop.index = FALSE)
 
 try2 <- mlogit.data(sample1, choice = "ind_choice", shape = "long", 
             alt.var = "BARRI_COD", 
@@ -70,10 +68,9 @@ try2 <- mlogit.data(sample1, choice = "ind_choice", shape = "long",
             drop.index=TRUE)
 
 
-# Let´s try some mixed logit regression
+# Let's try some mixed logit regression
 
-mixed_reg <- mlogit(ind_choice ~ age_building + perc_left +
-                      excess_uni + avg_rent_2015, try2
+mixed_reg <- mlogit(ind_choice ~ avg_rent_2015 | nation, try1
                     #,
                     #method = "bfgs",
                     #rpar=c(age_building = 'n', perc_left = 'n', excess_uni = 'n',
