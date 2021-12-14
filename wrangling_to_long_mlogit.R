@@ -1,18 +1,41 @@
 library(tidyverse)
 library(mlogit)
 
-#setwd("C:/Users/ggarcia/Desktop/PhD GG/10 - Data/01 - Paper 1")
+library(Rchoice)
+
+setwd("C:/Users/ggarcia/Desktop/PhD GG/10 - Data/01 - Paper 1")
 
 bcn <- read_delim("discrete_choice_dataset_bar.txt", 
                      delim = "|", col_names = TRUE)
 
 glimpse(bcn)
 
-
 # Generate individual index
 bcn %>% 
   mutate(id_individual = row_number()) %>% 
   add_column(sampling = runif(nrow(.))) -> bcn
+
+sample1 <- bcn %>% 
+            filter(sampling <= 0.1) %>% 
+            select(BARRI_COD, 
+                   Sexe, nation, 
+                   median_size_flat, perc_left, excess_uni, avg_rent_2015, mean_int_migration) %>% 
+            mutate(BARRI_COD = as.factor(BARRI_COD))
+
+reg_choice <- Rchoice(BARRI_COD ~ Sexe + nation + median_size_flat + perc_left + excess_uni + avg_rent_2015,
+                      data = sample1, family = ordinal("logit"))
+
+summary(reg_choice)
+
+
+library(nnet)
+
+reg_multi <- multinom(BARRI_COD ~ nation + perc_left + avg_rent_2015,
+                      data = sample1, model = TRUE)
+
+summary(reg_multi)
+
+
 
 # Generate dataframe with all crossings between individual and Barri
 bcn %>% expand(id_individual, BARRI_COD) -> master_df
@@ -43,40 +66,54 @@ df_ind_barri %>%
 df_ind_barri %>% 
   filter(!is.na(BARRI_COD)) -> df_ind_barri
 
-sample1 <- df_ind_barri %>% filter(sampling <= 0.1)
+sample_eur <- df_ind_barri %>% 
+            filter(nation == "European") %>% 
+            filter(sampling <= 0.1)
+
+sample_lat <- df_ind_barri %>% 
+                filter(nation == "Latino") %>% 
+                filter(sampling <= 0.1)
+
+sample1 <- sample1 %>% left_join(grup_barris_table, by = "BARRI_COD")
+
+sample <- sample1 %>%  mutate(Sexe = as.factor(Sexe),
+                               nation = as.factor(nation))
+
 
 
 ##########################
 # First regression trial
 
 # Generating the data format that mlogit needs
-try1 <- mlogit.data(sample1, 
-                    shape='long',
-                    alt.var= "BARRI_COD",
-                    choice = "ind_choice",
-                    id.var = "id_individual"
-                    )
+try_eur <- dfidx(sample_eur, shape = "long",
+              alt.var = "BARRI_COD",
+              chid.var = "choice",
+              idx = c("id_individual", "BARRI_COD"), drop.index = FALSE)
 
-try2 <- dfidx(sample1, shape = "long", choice = "ind_choice",
-              idx = list(c("ind_choice","id_individual")))
+try_lat <- dfidx(sample_lat, shape = "long",
+                 alt.var = "BARRI_COD",
+                 chid.var = "choice",
+                 idx = c("id_individual", "BARRI_COD"), drop.index = FALSE)
 
-try2 <- dfidx(sample1, idx = c("id_individual","BARRI_COD"), drop.index = FALSE)
-
-try2 <- mlogit.data(sample1, choice = "ind_choice", shape = "long", 
-            alt.var = "BARRI_COD", 
-            chid.var = "id_individual",
-            drop.index=TRUE)
+try_both <- dfidx(sample1, shape = "long",
+                 alt.var = "BARRI_COD",
+                 chid.var = "choice",
+                 idx = c("id_individual", "BARRI_COD"), drop.index = FALSE)
 
 
-# Let's try some mixed logit regression
+# Let´s try some mixed logit regression
 
-mixed_reg <- mlogit(ind_choice ~ avg_rent_2015 | nation, try1
-                    #,
-                    #method = "bfgs",
-                    #rpar=c(age_building = 'n', perc_left = 'n', excess_uni = 'n',
-                    #       avg_rent_2015 = 'n'),
-                    #R = 100, halton = NA, panel = TRUE
-                    )
+mixed_reg_eur <- mlogit(ind_choice ~ age_building + perc_left + excess_uni + avg_rent_2015 + mean_int_migration + sum_old | Sexe + 0, data = try_eur)
+
+summary(mixed_reg_eur)
 
 
-summary(mixed_reg)
+mixed_reg_lat <- mlogit(ind_choice ~ age_building + perc_left + excess_uni + avg_rent_2015 + mean_int_migration + sum_old | Sexe + 0, data = try_lat)
+
+summary(mixed_reg_lat)
+
+
+
+mixed_reg_both <- mlogit(ind_choice ~ age_building + perc_left + excess_uni + avg_rent_2015 + mean_int_migration + sum_old | nation + 0, data = try_both)
+
+summary(mixed_reg_both)
