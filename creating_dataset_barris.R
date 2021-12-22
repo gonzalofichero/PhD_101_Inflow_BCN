@@ -23,7 +23,7 @@ bcn <- read_delim("discrete_choice_dataset_bar.txt",
 grup_barris_table <- read_delim("tabla_conversion_agrupado_barrios.txt", 
                                 delim = "\t", col_names = TRUE)
 
-
+# Correcting wrong join in previous script "discrete_choice_model.R"
 bcn %>% 
   select(-BARRI_AGRUP_TONI) %>% 
   left_join(grup_barris_table, by ="BARRI_COD") -> bcn2
@@ -126,8 +126,11 @@ master73 %>%
 # Now I need to join information at Barri level
 indiv73 %>% 
   left_join(bcn73 %>% 
-              select(BARRI_COD, age_building, median_size_flat, perc_left,
-                     excess_uni, avg_rent_2015, sum_old,
+              select(BARRI_COD, income, mesas, bars,
+                     age_building, median_size_flat, perc_left, perc_indep,
+                     excess_uni, perc_domi_uni_25_40,
+                     Cinemas, Teatres,
+                     avg_rent_2015, sum_old,
                      mean_int_migration, European_stock, Latino_stock) %>% 
               distinct(),
             by = "BARRI_COD"
@@ -141,12 +144,82 @@ indiv_barri73 %>%
 
 
 
+##########################
+# bcn68 to mlogit frame
+
+# Generate individual index
+bcn68 %>% 
+  mutate(id_individual = row_number()) %>% 
+  add_column(sampling = runif(nrow(.))) -> bcn68
+
+# Generate dataframe with all crossings between individual and Barri
+bcn68 %>% expand(id_individual, BARRI_COD) -> master68
+
+# Now I need to join information at individual level
+master68 %>% 
+  left_join(bcn68 %>% 
+              select(id_individual, Sexe, nation, BARRI_COD, sampling) %>% 
+              rename(choice = BARRI_COD), 
+            by = "id_individual") -> indiv68
+
+# Now I need to join information at Barri level
+indiv68 %>% 
+  left_join(bcn68 %>% 
+              select(BARRI_COD, income, mesas, bars,
+                     age_building, median_size_flat, perc_left, perc_indep,
+                     excess_uni, perc_domi_uni_25_40,
+                     Cinemas, Teatres,
+                     avg_rent_2015, sum_old,
+                     mean_int_migration, European_stock, Latino_stock) %>% 
+              distinct(),
+            by = "BARRI_COD"
+  ) -> indiv_barri68
+
+
+# Create logical feature for selection of Barri
+indiv_barri68 %>% 
+  mutate(ind_choice = case_when(BARRI_COD == choice ~ TRUE,
+                                TRUE ~ FALSE)) -> indiv_barri68
 
 
 
 
+##########################
+# bcn69 to mlogit frame
+
+# Generate individual index
+bcn69 %>% 
+  mutate(id_individual = row_number()) %>% 
+  add_column(sampling = runif(nrow(.))) -> bcn69
+
+# Generate dataframe with all crossings between individual and Barri
+bcn69 %>% expand(id_individual, BARRI_COD) -> master69
+
+# Now I need to join information at individual level
+master69 %>% 
+  left_join(bcn69 %>% 
+              select(id_individual, Sexe, nation, BARRI_COD, sampling) %>% 
+              rename(choice = BARRI_COD), 
+            by = "id_individual") -> indiv69
+
+# Now I need to join information at Barri level
+indiv69 %>% 
+  left_join(bcn69 %>% 
+              select(BARRI_COD, income, mesas, bars,
+                     age_building, median_size_flat, perc_left, perc_indep,
+                     excess_uni, perc_domi_uni_25_40,
+                     Cinemas, Teatres,
+                     avg_rent_2015, sum_old,
+                     mean_int_migration, European_stock, Latino_stock) %>% 
+              distinct(),
+            by = "BARRI_COD"
+  ) -> indiv_barri69
 
 
+# Create logical feature for selection of Barri
+indiv_barri69 %>% 
+  mutate(ind_choice = case_when(BARRI_COD == choice ~ TRUE,
+                                TRUE ~ FALSE)) -> indiv_barri69
 
 
 
