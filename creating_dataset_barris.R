@@ -62,14 +62,39 @@ bcn_toni %>%
          size_barri_m2, perc_left, perc_indep, excess_uni,
          perc_domi_uni_25_40, Cinemas, Teatres, avg_rent_2015,
          sum_old, mean_int_migration,
-         European_stock, Latino_stock, Spanish_stock) %>% 
+         European_stock, Latino_stock) %>% 
   #select(NOM, BARRI_AGRUP_TONI, Poblacio) %>% 
   unique() -> barris_toni
   
-  write_delim(barris_toni, "barris_to_group.txt", delim = "|")
+
+# No more Excel solution :D
+barris_toni %>% 
+  group_by(BARRI_AGRUP_TONI) %>% 
+  summarize(
+    income = weighted.mean(income,Poblacio),
+    mesas = sum(mesas),
+    bars = sum(bars),
+    age_building = weighted.mean(age_building,Poblacio),
+    size_barri_m2 = sum(size_barri_m2), 
+    perc_left = weighted.mean(perc_left,Poblacio),
+    perc_indep = weighted.mean(perc_indep,Poblacio),
+    excess_uni = weighted.mean(excess_uni,Poblacio),
+    perc_domi_uni_25_40 = weighted.mean(perc_domi_uni_25_40,Poblacio),
+    Cinemas = sum(Cinemas),
+    Teatres = sum(Teatres),
+    avg_rent_2015 = weighted.mean(avg_rent_2015,Poblacio),
+    sum_old = weighted.mean(sum_old,Poblacio),
+    mean_int_migration = weighted.mean(mean_int_migration,Poblacio),
+    European_stock = weighted.mean(European_stock,Poblacio),
+    Latino_stock = weighted.mean(Latino_stock,Poblacio),
+    Poblacio = sum(Poblacio)) %>% 
+  ungroup() -> bcn_toni_grouped
+
+
+#write_delim(barris_toni, "barris_to_group.txt", delim = "|")
 
 # Coming back from Excel
-bcn_toni_grouped <- read_delim("barris_grouped.txt", delim="|")
+# bcn_toni_grouped <- read_delim("barris_grouped.txt", delim="|")
 
 
 # Now it's time to put everything together
