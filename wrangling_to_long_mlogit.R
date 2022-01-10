@@ -155,7 +155,7 @@ summary(logit_lat73)
 r_euro73 %>% mutate(cultural = Teatres + Cinemas) -> r_euro73
 r_lat73 %>% mutate(cultural = Teatres + Cinemas) -> r_lat73
 
-
+# Europeans
 logit_euro73a <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left | 0, data = r_euro73)
 logit_euro73b <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 | 0, data = r_euro73)
 logit_euro73c <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 + bars | 0, data = r_euro73)
@@ -163,6 +163,15 @@ logit_euro73d <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building
 logit_euro73e <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni | 0, data = r_euro73)
 logit_euro73f <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni + cultural | 0, data = r_euro73)
 
+
+
+# Latinos
+logit_lat73a <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left | 0, data = r_lat73)
+logit_lat73b <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 | 0, data = r_lat73)
+logit_lat73c <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 + bars | 0, data = r_lat73)
+logit_lat73d <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 | 0, data = r_lat73)
+logit_lat73e <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni | 0, data = r_lat73)
+logit_lat73f <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni + cultural | 0, data = r_lat73)
 
 
 # Results
@@ -181,6 +190,19 @@ stargazer(logit_euro73a, logit_euro73b,
           type = "html", out="logit_euro73.html")
 
 
+stargazer(logit_lat73a, logit_lat73b, 
+          logit_lat73c, logit_lat73d,
+          logit_lat73e, logit_lat73f,
+          covariate.labels = c("Avg Age in Padron",
+                               "Rate internal Mobility",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               "Avg Rent", "Bars per population", 
+                               "Unitary Households", "University Population",
+                               "Cultural Equipment"),
+          column.labels=c("1", "2", "3", "4", "5", "6"),
+          dep.var.labels = c("","","","", "", ""),
+          type = "html", out="logit_lat73.html")
 
 
 ###########################################
