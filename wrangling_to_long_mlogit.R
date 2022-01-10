@@ -166,12 +166,12 @@ logit_euro73f <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building
 
 
 # Latinos
-logit_lat73a <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left | 0, data = r_lat73)
-logit_lat73b <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 | 0, data = r_lat73)
-logit_lat73c <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 + bars | 0, data = r_lat73)
-logit_lat73d <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 | 0, data = r_lat73)
-logit_lat73e <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni | 0, data = r_lat73)
-logit_lat73f <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni + cultural | 0, data = r_lat73)
+logit_lat73a <- mlogit(ind_choice ~ sum_old + age_building + perc_left | 0, data = r_lat73)
+logit_lat73b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 | 0, data = r_lat73)
+logit_lat73c <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars | 0, data = r_lat73)
+logit_lat73d <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 | 0, data = r_lat73)
+logit_lat73e <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni | 0, data = r_lat73)
+logit_lat73f <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni + cultural | 0, data = r_lat73)
 
 
 # Results
@@ -179,7 +179,6 @@ stargazer(logit_euro73a, logit_euro73b,
           logit_euro73c, logit_euro73d,
           logit_euro73e, logit_euro73f,
           covariate.labels = c("Avg Age in Padron",
-                               "Rate internal Mobility",
                                "Avg Age of Building",
                                "Left Wing votes (municipal elections)",
                                "Avg Rent", "Bars per population", 
