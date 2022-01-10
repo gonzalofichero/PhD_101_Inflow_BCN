@@ -1,8 +1,6 @@
 library(tidyverse)
 library(mlogit)
 
-library(Rchoice)
-
 setwd("C:/Users/ggarcia/Desktop/PhD GG/10 - Data/01 - Paper 1")
 
 bcn <- read_delim("discrete_choice_dataset_bar.txt", 
@@ -81,39 +79,115 @@ sample <- sample1 %>%  mutate(Sexe = as.factor(Sexe),
 
 
 
-##########################
-# First regression trial
+##############################################
+# First regression trial: no mixed logit
+
+
+
+# Importing the data
+indiv_barri73 <- read_delim("mlogit_bcn73.txt", delim="|")
+indiv_barri69 <- read_delim("mlogit_bcn69.txt", delim="|")
+indiv_barri68 <- read_delim("mlogit_bcn68.txt", delim="|")
+
+
+# Splitting between Europeans and Latinos
+euro_73 <- indiv_barri73 %>% filter(nation=="European")
+latino_73 <- indiv_barri73 %>% filter(nation=="Latino")
+
+euro_69 <- indiv_barri69 %>% filter(nation=="European")
+latino_69 <- indiv_barri69 %>% filter(nation=="Latino")
+
+euro_68 <- indiv_barri68 %>% filter(nation=="European")
+latino_68 <- indiv_barri68 %>% filter(nation=="Latino")
+
 
 # Generating the data format that mlogit needs
-try_eur <- dfidx(sample_eur, shape = "long",
+r_euro73 <- dfidx(euro_73, shape = "long",
               alt.var = "BARRI_COD",
               chid.var = "choice",
               idx = c("id_individual", "BARRI_COD"), drop.index = FALSE)
 
-try_lat <- dfidx(sample_lat, shape = "long",
-                 alt.var = "BARRI_COD",
-                 chid.var = "choice",
-                 idx = c("id_individual", "BARRI_COD"), drop.index = FALSE)
-
-try_both <- dfidx(sample1, shape = "long",
+r_lat73 <- dfidx(latino_73, shape = "long",
                  alt.var = "BARRI_COD",
                  chid.var = "choice",
                  idx = c("id_individual", "BARRI_COD"), drop.index = FALSE)
 
 
-# Let´s try some mixed logit regression
 
-mixed_reg_eur <- mlogit(ind_choice ~ age_building + perc_left + excess_uni + avg_rent_2015 + mean_int_migration + sum_old | Sexe + 0, data = try_eur)
+r_euro69 <- dfidx(euro_69, shape = "long",
+                  alt.var = "BARRI_COD",
+                  chid.var = "choice",
+                  idx = c("id_individual", "BARRI_COD"), drop.index = FALSE)
 
-summary(mixed_reg_eur)
+r_lat69 <- dfidx(latino_69, shape = "long",
+                 alt.var = "BARRI_COD",
+                 chid.var = "choice",
+                 idx = c("id_individual", "BARRI_COD"), drop.index = FALSE)
 
 
-mixed_reg_lat <- mlogit(ind_choice ~ age_building + perc_left + excess_uni + avg_rent_2015 + mean_int_migration + sum_old | Sexe + 0, data = try_lat)
+r_euro68 <- dfidx(euro_68, shape = "long",
+                  alt.var = "BARRI_COD",
+                  chid.var = "choice",
+                  idx = c("id_individual", "BARRI_COD"), drop.index = FALSE)
 
-summary(mixed_reg_lat)
+r_lat68 <- dfidx(latino_68, shape = "long",
+                 alt.var = "BARRI_COD",
+                 chid.var = "choice",
+                 idx = c("id_individual", "BARRI_COD"), drop.index = FALSE)
 
 
 
-mixed_reg_both <- mlogit(ind_choice ~ age_building + perc_left + excess_uni + avg_rent_2015 + mean_int_migration + sum_old | nation + 0, data = try_both)
+# Let's try some logit regression
 
-summary(mixed_reg_both)
+
+# For 73 barris, both nation groups
+logit_euro73 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + bars | 0, data = r_euro73)
+
+summary(logit_euro73)
+
+
+logit_lat73 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + bars | 0, data = r_lat73)
+
+summary(logit_lat73)
+
+
+# For 69 barris, both nation groups
+logit_euro69 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + bars | 0, data = r_euro69)
+
+summary(logit_euro69)
+
+
+logit_lat69 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + bars | 0, data = r_lat69)
+
+summary(logit_lat69)
+
+
+# For 68 barris, both nation groups
+logit_euro68 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + bars | 0, data = r_euro68)
+
+summary(logit_euro68)
+
+
+logit_lat68 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + bars | 0, data = r_lat68)
+
+summary(logit_lat68)
+
+
+
+# All results together in 1 big table
+library(stargazer)
+
+stargazer(logit_euro73, logit_lat73, 
+          logit_euro69, logit_lat69,
+          logit_euro68, logit_lat68,
+          covariate.labels = c("Avg Age of Building" , "Left Wing votes (municipal elections)",
+                               "Avg Rent", "Bars per population"),
+          column.labels=c("Euro inf (73b)", "Latino inf (73b)",
+                          "Euro inf (69b)", "Latino inf (69b)",
+                          "Euro inf (68b)", "Latino inf (68b)"
+                          ),
+          dep.var.labels = c("","","","","",""),
+          type = "html", out="comparing_results_logit.html")
+
+
+
