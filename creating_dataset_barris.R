@@ -37,7 +37,7 @@ bcn2 %>%
 
 # Dataset 2: 69 barris, Toni's group_by
 
-# Barris that don´t change
+# Barris that don?t change
 bcn_original <- bcn2 %>% 
                 filter(!is.na(Nom_Barri_dest)) %>% 
                   filter(NOM == BARRI_AGRUP_TONI) %>% 
@@ -55,7 +55,7 @@ bcn_toni <- bcn2 %>%
               filter(!is.na(NOM)) %>% 
               filter(NOM != BARRI_AGRUP_TONI)
 
-# This is horrible, I´m taking it to Excel :'(
+# This is horrible, I?m taking it to Excel :'(
 bcn_toni %>% 
   select(NOM, BARRI_AGRUP_TONI, Poblacio, 
          income, mesas, bars, age_building, median_size_flat,
@@ -118,7 +118,7 @@ bcn2 %>%
 
 bcn2 %>% 
   filter(!is.na(NOM)) %>% 
-  filter(!NOM %in% c("Baró de Viver", "la Clota", 
+  filter(!NOM %in% c("BarÃ³ de Viver", "la Clota", 
                      "la Marina del Prat Vermell - AEI Zona Franca (2)",
                      "Vallbona")) -> bcn68
 
@@ -126,7 +126,7 @@ bcn2 %>%
 
 
 ####################################################################
-# Second part: iot's time to create mlogit datasets for each bcnXX
+# Second part: it's time to create mlogit datasets for each bcnXX
 
 library(mlogit)
 
