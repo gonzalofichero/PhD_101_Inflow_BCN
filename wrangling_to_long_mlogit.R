@@ -178,15 +178,15 @@ summary(logit_lat68)
 library(stargazer)
 
 stargazer(logit_euro73, logit_lat73, 
-          logit_euro69, logit_lat69,
+          #logit_euro69, logit_lat69,
           logit_euro68, logit_lat68,
           covariate.labels = c("Avg Age of Building" , "Left Wing votes (municipal elections)",
                                "Avg Rent", "Bars per population"),
           column.labels=c("Euro inf (73b)", "Latino inf (73b)",
-                          "Euro inf (69b)", "Latino inf (69b)",
+                          #"Euro inf (69b)", "Latino inf (69b)",
                           "Euro inf (68b)", "Latino inf (68b)"
                           ),
-          dep.var.labels = c("","","","","",""),
+          dep.var.labels = c("","","",""),
           type = "html", out="comparing_results_logit.html")
 
 
