@@ -139,7 +139,7 @@ r_lat68 <- dfidx(latino_68, shape = "long",
 
 # Let's try some logit regression
 
-
+###########################################
 # For 73 barris, both nation groups
 logit_euro73 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + bars | 0, data = r_euro73)
 
@@ -151,6 +151,35 @@ logit_lat73 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + ba
 summary(logit_lat73)
 
 
+# Stepwise process for 73 barris
+r_euro73 %>% mutate(cultural = Teatres + Cinemas) -> r_euro73
+r_lat73 %>% mutate(cultural = Teatres + Cinemas) -> r_lat73
+
+
+logit_euro73a <- mlogit(ind_choice ~ sum_old + mean_int_migration + age_building + perc_left | 0, data = r_euro73)
+
+
+
+
+
+
+# Results
+stargazer(logit_euro73, logit_lat73, 
+          #logit_euro69, logit_lat69,
+          logit_euro68, logit_lat68,
+          covariate.labels = c("Avg Age of Building" , "Left Wing votes (municipal elections)",
+                               "Avg Rent", "Bars per population"),
+          column.labels=c("Euro inf (73b)", "Latino inf (73b)",
+                          #"Euro inf (69b)", "Latino inf (69b)",
+                          "Euro inf (68b)", "Latino inf (68b)"
+          ),
+          dep.var.labels = c("","","",""),
+          type = "html", out="comparing_results_logit.html")
+
+
+
+
+###########################################
 # For 69 barris, both nation groups
 logit_euro69 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + bars | 0, data = r_euro69)
 
@@ -162,6 +191,7 @@ logit_lat69 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + ba
 summary(logit_lat69)
 
 
+###########################################
 # For 68 barris, both nation groups
 logit_euro68 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + bars | 0, data = r_euro68)
 
