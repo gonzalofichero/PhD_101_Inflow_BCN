@@ -227,7 +227,7 @@ logit_lat68 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + ba
 summary(logit_lat68)
 
 
-# Stepwise process for 73 barris
+# Stepwise process for 68 barris
 r_euro68 %>% mutate(cultural = Teatres + Cinemas) -> r_euro68
 r_lat68 %>% mutate(cultural = Teatres + Cinemas) -> r_lat68
 
@@ -262,7 +262,7 @@ stargazer(logit_euro68a, logit_euro68b,
                                "Cultural Equipment"),
           column.labels=c("1", "2", "3", "4", "5", "6"),
           dep.var.labels = c("","","","", "", ""),
-          type = "html", out="logit_euro73.html")
+          type = "html", out="logit_euro68.html")
 
 
 stargazer(logit_lat68a, logit_lat68b, 
@@ -276,7 +276,7 @@ stargazer(logit_lat68a, logit_lat68b,
                                "Cultural Equipment"),
           column.labels=c("1", "2", "3", "4", "5", "6"),
           dep.var.labels = c("","","","", "", ""),
-          type = "html", out="logit_lat73.html")
+          type = "html", out="logit_lat68.html")
 
 
 
