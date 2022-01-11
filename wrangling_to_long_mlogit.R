@@ -227,8 +227,62 @@ logit_lat68 <- mlogit(ind_choice ~ age_building + perc_left + avg_rent_2015 + ba
 summary(logit_lat68)
 
 
+# Stepwise process for 73 barris
+r_euro68 %>% mutate(cultural = Teatres + Cinemas) -> r_euro68
+r_lat68 %>% mutate(cultural = Teatres + Cinemas) -> r_lat68
 
-# All results together in 1 big table
+# Europeans
+logit_euro68a <- mlogit(ind_choice ~ sum_old + age_building + perc_left | 0, data = r_euro68)
+logit_euro68b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 | 0, data = r_euro68)
+logit_euro68c <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars | 0, data = r_euro68)
+logit_euro68d <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 | 0, data = r_euro68)
+logit_euro68e <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni | 0, data = r_euro68)
+logit_euro68f <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni + cultural | 0, data = r_euro68)
+
+
+
+# Latinos
+logit_lat68a <- mlogit(ind_choice ~ sum_old + age_building + perc_left | 0, data = r_lat68)
+logit_lat68b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 | 0, data = r_lat68)
+logit_lat68c <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars | 0, data = r_lat68)
+logit_lat68d <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 | 0, data = r_lat68)
+logit_lat68e <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni | 0, data = r_lat68)
+logit_lat68f <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni + cultural | 0, data = r_lat68)
+
+
+# Results
+stargazer(logit_euro68a, logit_euro68b, 
+          logit_euro68c, logit_euro68d,
+          logit_euro68e, logit_euro68f,
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               "Avg Rent", "Bars per population", 
+                               "Unitary Households", "University Population",
+                               "Cultural Equipment"),
+          column.labels=c("1", "2", "3", "4", "5", "6"),
+          dep.var.labels = c("","","","", "", ""),
+          type = "html", out="logit_euro73.html")
+
+
+stargazer(logit_lat68a, logit_lat68b, 
+          logit_lat68c, logit_lat68d,
+          logit_lat68e, logit_lat68f,
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               "Avg Rent", "Bars per population", 
+                               "Unitary Households", "University Population",
+                               "Cultural Equipment"),
+          column.labels=c("1", "2", "3", "4", "5", "6"),
+          dep.var.labels = c("","","","", "", ""),
+          type = "html", out="logit_lat73.html")
+
+
+
+
+########################################################
+# All results (3 groups barris) together in 1 big table
 library(stargazer)
 
 stargazer(logit_euro73, logit_lat73, 
