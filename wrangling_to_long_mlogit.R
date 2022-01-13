@@ -299,3 +299,25 @@ stargazer(logit_euro73, logit_lat73,
 
 
 
+
+#################################################
+# Mixed logit models for both groups, 73 barris
+
+logit_lat73_mixed <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni + cultural | 0, 
+                       data = r_lat73,
+                       rpar = c(sum_old = "n", age_building = "n", perc_left = "n",
+                                avg_rent_2015 = "n", bars = "n", perc_domi_uni_25_40 = "n",
+                                excess_uni = "n", cultural = "n"),
+                       correlation = TRUE, R = 100, halton = NA)
+
+summary(logit_lat73_mixed)
+
+
+logit_euro73_mixed <- mlogit(ind_choice ~ sum_old + age_building + perc_left + avg_rent_2015 + bars + perc_domi_uni_25_40 + excess_uni + cultural | 0, 
+                            data = r_euro73,
+                            rpar = c(sum_old = "n", age_building = "n", perc_left = "n",
+                                     avg_rent_2015 = "n", bars = "n", perc_domi_uni_25_40 = "n",
+                                     excess_uni = "n", cultural = "n"),
+                            correlation = TRUE, R = 100, halton = NA)
+
+summary(logit_euro73_mixed)
