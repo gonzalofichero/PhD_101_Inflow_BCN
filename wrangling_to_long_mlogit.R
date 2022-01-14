@@ -1,5 +1,6 @@
 library(tidyverse)
 library(mlogit)
+library(stargazer)
 
 setwd("C:/Users/ggarcia/Desktop/PhD GG/10 - Data/01 - Paper 1")
 
@@ -283,7 +284,7 @@ stargazer(logit_lat68a, logit_lat68b,
 
 ########################################################
 # All results (3 groups barris) together in 1 big table
-library(stargazer)
+
 
 stargazer(logit_euro73, logit_lat73, 
           #logit_euro69, logit_lat69,
