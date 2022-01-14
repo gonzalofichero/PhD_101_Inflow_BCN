@@ -287,7 +287,6 @@ stargazer(logit_lat68a, logit_lat68b,
 
 stargazer(logit_euro68f, logit_euro73f, 
           logit_lat73f, logit_lat68f,
-          logit_euro68e, logit_euro68f,
           covariate.labels = c("Avg Age in Padron",
                                "Avg Age of Building",
                                "Left Wing votes (municipal elections)",
