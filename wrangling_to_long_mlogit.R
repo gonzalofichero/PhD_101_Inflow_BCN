@@ -282,6 +282,24 @@ stargazer(logit_lat68a, logit_lat68b,
 
 
 
+##################################################################
+# 73 vs 68 barris, both groups, all features models - comparison
+
+stargazer(logit_euro68f, logit_euro73f, 
+          logit_lat73f, logit_lat68f,
+          logit_euro68e, logit_euro68f,
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               "Avg Rent", "Bars per population", 
+                               "Unitary Households", "University Population",
+                               "Cultural Equipment"),
+          column.labels=c("Euro-68", "Euro-73", "Lat-73", "Lat-68"),
+          dep.var.labels = c("","","",""),
+          type = "html", out="logit_68vs73.html")
+
+
+
 ########################################################
 # All results (3 groups barris) together in 1 big table
 
