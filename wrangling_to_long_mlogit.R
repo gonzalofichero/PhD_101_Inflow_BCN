@@ -339,3 +339,22 @@ logit_euro73_mixed <- mlogit(ind_choice ~ sum_old + age_building + perc_left + a
                             correlation = TRUE, R = 100, halton = NA)
 
 summary(logit_euro73_mixed)
+
+
+
+#################################################
+# Histogram of independent variables: N or LN?
+
+bcn %>% 
+  filter(!is.na(BARRI_COD)) %>% 
+  select(BARRI_COD, sum_old, age_building, 
+         perc_left, avg_rent_2015, bars, perc_domi_uni_25_40,
+         excess_uni, Teatres, Cinemas) %>% 
+  group_by(BARRI_COD) %>% 
+  distinct() %>% 
+  mutate(cultural = Teatres + Cinemas) -> features_barris
+
+
+
+
+
