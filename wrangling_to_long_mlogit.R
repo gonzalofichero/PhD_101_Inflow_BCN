@@ -354,7 +354,9 @@ bcn %>%
   distinct() %>% 
   mutate(cultural = Teatres + Cinemas) -> features_barris
 
-
+features_barris %>% 
+  ggplot(aes(x=sum_old)) + geom_histogram() +
+  labs(y="count", x = "Avg Age Padron")
 
 
 
