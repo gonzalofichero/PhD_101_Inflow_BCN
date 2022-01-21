@@ -1,8 +1,16 @@
+###################################
+# CREATING ADDITIONAL VARIABLES FOR PAPER 1
+# AFTER 20220117 MEETING WITH SUPERVISORS
+# Need to create:
+# (1) Cultural Equipment (Teatres + Cinemas)  per Population
+# (2) Closeness to see
+# (3) %co-ethnic for Nations in Latino/European groups
+# (4) %renting places = Airbnb data
+
+
 
 ###################################################
 # Creating co-ethnic variable, individual level
-
-
 
 library(tidyverse)
 library(readxl)
@@ -42,17 +50,31 @@ origin_bcn_2 <- origin_bcn %>%
                                                        'NICARAGUA','PANAMA') ~ "Resta América",
                              TRUE ~ "Otros")) %>% 
   select(Barrio, nation2, Total) %>%
-  group_by(Barrio, nation) %>%
-  summarize(stock_nation = sum(Total, na.rm = T)) %>% 
+  group_by(Barrio, nation2) %>%
+  summarize(stock_ethnic = sum(Total, na.rm = T)) %>% 
   ungroup() %>% 
   #mutate(Codi_Barri = as.factor(str_pad(Codi_Barri, width=2, side="left", pad="0"))) %>% 
-  rename(BARRI = Barrio)
+  rename(BARRI_COD = Barrio)
 
-total_origin_bcn <- origin_bcn_2 %>% 
-  group_by(nation) %>% 
-  summarize(total_stock_nation = sum(stock_nation))
 
-origin_bcn_3 <- origin_bcn_2 %>% left_join(total_origin_bcn, by = "nation") %>% 
-  mutate(perc_stock_origin = stock_nation / total_stock_nation) %>% 
-  select(BARRI, nation, perc_stock_origin) %>% 
-  pivot_wider(names_from = nation, values_from = perc_stock_origin)
+
+# Now taking the population by barri, to have for each ethnic the % that represents in the barri
+bcn %>% 
+  filter(!is.na(BARRI_COD)) %>% 
+  select(BARRI_COD, Poblacio) %>% 
+  unique() -> pop_barri
+
+
+# Putting everything together by barri and ethnic origin
+origin_bcn_2 %>% 
+  left_join(pop_barri, by = "BARRI_COD") %>% 
+  mutate(perc_ethnic = stock_ethnic / Poblacio) %>% 
+  select(-Poblacio) -> ethnic_composition
+
+
+
+
+
+
+
+
