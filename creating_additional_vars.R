@@ -69,7 +69,8 @@ bcn %>%
 origin_bcn_2 %>% 
   left_join(pop_barri, by = "BARRI_COD") %>% 
   mutate(perc_ethnic = stock_ethnic / Poblacio) %>% 
-  select(-Poblacio) -> ethnic_composition
+  select(-Poblacio) %>% 
+  rename(NOM_Naix = nation2) -> ethnic_composition
 
 
 
