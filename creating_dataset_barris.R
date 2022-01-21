@@ -29,40 +29,51 @@ bcn %>%
   left_join(grup_barris_table, by ="BARRI_COD") -> bcn2
 
 
-# Dataset 1: 73 barris
+##############################################
+# Adding new variables for analysis: 20210121
 
 bcn2 %>% 
+  left_join(ethnic_composition, by = c("BARRI_COD", "NOM_Naix")) %>% 
+  left_join(cultural_barri, by = "BARRI_COD") %>% 
+  left_join(beach, by = "BARRI_COD") -> bcn3
+              
+
+
+# Dataset 1: 73 barris
+
+bcn3 %>% 
   filter(!is.na(NOM)) -> bcn73
 
 
 # Dataset 2: 69 barris, Toni's group_by
 
-# Barris that don?t change
-bcn_original <- bcn2 %>% 
+# Barris that don't change
+bcn_original <- bcn3 %>% 
                 filter(!is.na(Nom_Barri_dest)) %>% 
                   filter(NOM == BARRI_AGRUP_TONI) %>% 
                   select(Any, Sexe, BARRI_COD, nation, NOM_Naix,
                          ind_inflow, BARRI_AGRUP_TONI,
                          Poblacio, income, mesas, bars,
-                         age_building, median_size_flat, size_barri_m2,
+                         age_building, size_barri_m2,
                          perc_left, perc_indep, excess_uni, perc_domi_uni_25_40,
                          Cinemas, Teatres, avg_rent_2015, sum_old,
-                         mean_int_migration,
-                         European_stock, Latino_stock)
+                         perc_ethnic, cultural_pop, Time_bike_Barceloneta,
+                         dist_bike_barceloneta
+                         )
 
 # Barris that have to be grouped
-bcn_toni <- bcn2 %>% 
+bcn_toni <- bcn3 %>% 
               filter(!is.na(NOM)) %>% 
               filter(NOM != BARRI_AGRUP_TONI)
 
-# This is horrible, I?m taking it to Excel :'(
+
 bcn_toni %>% 
   select(NOM, BARRI_AGRUP_TONI, Poblacio, 
          income, mesas, bars, age_building, median_size_flat,
          size_barri_m2, perc_left, perc_indep, excess_uni,
          perc_domi_uni_25_40, Cinemas, Teatres, avg_rent_2015,
-         sum_old, mean_int_migration,
-         European_stock, Latino_stock) %>% 
+         sum_old, perc_ethnic, cultural_pop, Time_bike_Barceloneta,
+         dist_bike_barceloneta) %>% 
   #select(NOM, BARRI_AGRUP_TONI, Poblacio) %>% 
   unique() -> barris_toni
   
@@ -84,17 +95,14 @@ barris_toni %>%
     Teatres = sum(Teatres),
     avg_rent_2015 = weighted.mean(avg_rent_2015,Poblacio),
     sum_old = weighted.mean(sum_old,Poblacio),
-    mean_int_migration = weighted.mean(mean_int_migration,Poblacio),
-    European_stock = weighted.mean(European_stock,Poblacio),
-    Latino_stock = weighted.mean(Latino_stock,Poblacio),
-    Poblacio = sum(Poblacio)) %>% 
+    perc_ethnic = weighted.mean(perc_ethnic,Poblacio),
+    cultural_pop = weighted.mean(cultural_pop,Poblacio),
+    Time_bike_Barceloneta = weighted.mean(Time_bike_Barceloneta,Poblacio),
+    dist_bike_barceloneta = weighted.mean(dist_bike_barceloneta,Poblacio),
+    Poblacio = sum(Poblacio),
+    ) %>% 
   ungroup() -> bcn_toni_grouped
 
-
-#write_delim(barris_toni, "barris_to_group.txt", delim = "|")
-
-# Coming back from Excel
-# bcn_toni_grouped <- read_delim("barris_grouped.txt", delim="|")
 
 
 # Now it's time to put everything together
@@ -107,21 +115,28 @@ bcn_toni %>%
 bcn69 <- rbind(bcn_original, bcn_toni_final)
 
 
-
+# DEPRECATED: NO DIFFERENCE BETWEEN THIS BARRIS AND TONI'S GROUPING
 # Dataset 3: 68 barris, low inflow Barris kicked out
 
-bcn2 %>% 
-  filter(!is.na(NOM)) %>% 
-  group_by(NOM, nation) %>% 
-  summarise(inflow = n()) %>% 
-  filter(inflow <= 10)
+# bcn2 %>% 
+#   filter(!is.na(NOM)) %>% 
+#   group_by(NOM, nation) %>% 
+#   summarise(inflow = n()) %>% 
+#   filter(inflow <= 10)
+# 
+# bcn2 %>% 
+#   filter(!is.na(NOM)) %>% 
+#   filter(!NOM %in% c("Baró de Viver", "la Clota", 
+#                      "la Marina del Prat Vermell - AEI Zona Franca (2)",
+#                      "Vallbona")) -> bcn68
 
-bcn2 %>% 
-  filter(!is.na(NOM)) %>% 
-  filter(!NOM %in% c("Baró de Viver", "la Clota", 
-                     "la Marina del Prat Vermell - AEI Zona Franca (2)",
-                     "Vallbona")) -> bcn68
 
+
+##########################################
+# Time to export files to continue later
+
+write_delim(bcn73, "mlogit_bcn73_full.txt", delim = "|")
+write_delim(bcn69, "mlogit_bcn69_full.txt", delim = "|")
 
 
 
