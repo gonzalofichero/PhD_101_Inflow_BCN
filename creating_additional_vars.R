@@ -75,6 +75,19 @@ origin_bcn_2 %>%
 
 
 
+#####################################################################
+# Creating cultural equipment per pop (per 1000), alternative level
+bcn %>% 
+  filter(!is.na(BARRI_COD)) %>% 
+  select(BARRI_COD, Poblacio, Teatres, Cinemas) %>% 
+  unique() %>% 
+  mutate(cultural_pop = (Teatres + Cinemas) / Poblacio *1000) %>% 
+  select(BARRI_COD, cultural_pop) -> cultural_barri
+
+
+
+
+
 
 
 
