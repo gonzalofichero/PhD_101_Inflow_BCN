@@ -9,7 +9,7 @@ library(readxl)
 
 # From Ajuntament's data: #people by age, sex and country of birth for each barri
 
-origin_bcn <- read_excel("02 - Data/PC_2016.xlsx", sheet = "Datos")
+origin_bcn <- read_excel("PC_2016.xlsx", sheet = "Datos")
 glimpse(origin_bcn)
 
 
