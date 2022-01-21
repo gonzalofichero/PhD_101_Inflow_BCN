@@ -87,6 +87,16 @@ bcn %>%
 
 
 
+#################################################################################
+# Creating distance to beach variable (taken from Google Maps), alternative level
+beach <- read_delim("beach_distance_BCN.txt", delim = "|")
+
+
+beach %>% 
+  # some problem when importing the file
+  rename(dist_bike_barceloneta = `Dist_bike_Barceloneta `) %>% 
+  mutate(dist_bike_barceloneta = as.double(dist_bike_barceloneta)) %>% 
+  select(BARRI_COD, Time_bike_Barceloneta, dist_bike_barceloneta) -> beach
 
 
 
