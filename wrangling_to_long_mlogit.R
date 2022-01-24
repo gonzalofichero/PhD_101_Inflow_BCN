@@ -401,14 +401,14 @@ stargazer(logit_lat73_control, logit_lat73_h2a,
           covariate.labels = c("Avg Age in Padron",
                                "Avg Age of Building",
                                "Left Wing votes (municipal elections)",
-                               
-                               "University Population", "Unitary Households",
-                               
-                               "Avg Rent", "Bars per population", 
-                               "Cultural Equipment"),
+                               "Unitary Households", "University Population", 
+                               "Avg Rent", 
+                               "Cultural Equipment", "Bars per population", "Distance to beach", 
+                               "%co-ethnic component by barri"
+                               ),
           column.labels=c("Control", "Economic Rest.",
-                          "Amenities", "Ethnic Support",  "Full"),
-          dep.var.labels = c("","","",""),
+                          "Amenities", "Ethnic Support", "Full"),
+          dep.var.labels = c("","","","",""),
           type = "html", out="logit_latino_73.html")
 
 
@@ -423,21 +423,27 @@ logit_euro73_h2b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + per
                           data = barri73_euro)
 
 logit_euro73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni | 0 + perc_ethnic, 
-                           data = barri73_euro)
+                         data = barri73_euro)
 
 logit_euro73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0 + perc_ethnic, 
                            data = barri73_euro)
 
 
 stargazer(logit_euro73_control, logit_euro73_h2a, 
-          logit_euro73_h2b,
+          logit_euro73_h2b, 
           logit_euro73_h3,
           logit_euro73_full,
-          covariate.labels = c("Avg Age of Building" , "Left Wing votes (municipal elections)",
-                               "Avg Rent", "Bars per population"),
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               "Unitary Households", "University Population", 
+                               "Avg Rent", 
+                               "Cultural Equipment", "Bars per population", "Distance to beach", 
+                               "%co-ethnic component by barri"
+          ),
           column.labels=c("Control", "Economic Rest.",
-                          "Amenities", "Ethnic Support",  "Full"),
-          dep.var.labels = c("","","",""),
-          type = "html", out="logit_latino_73.html")
+                          "Amenities", "Ethnic Support", "Full"),
+          dep.var.labels = c("","","","",""),
+          type = "html", out="logit_euro_73.html")
 
 
