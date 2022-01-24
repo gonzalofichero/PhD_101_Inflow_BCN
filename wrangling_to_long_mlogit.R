@@ -360,3 +360,84 @@ features_barris %>%
 
 
 
+
+
+##########################################
+# Testing hypothesis H1, H2a and H2b
+
+
+# First with the 73 barris
+indiv_barri73 <- read_delim("mlogit_bcn73_full.txt", 
+                  delim = "|", col_names = TRUE)
+
+# Splitting into Europeans and Latinos
+barri73_lat <- indiv_barri73 %>% filter(nation == "Latino")
+barri73_euro <- indiv_barri73 %>% filter(nation == "European")
+
+
+# Running 4 regressions for both groups
+
+## Latinos
+logit_lat73_control <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni | 0, 
+                            data = barri73_lat)
+
+logit_lat73_h2a <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 | 0, 
+                              data = barri73_lat)
+
+logit_lat73_h2b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + cultural_pop + bars + Time_bike_Barceloneta | 0, 
+                          data = barri73_lat)
+
+logit_lat73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 * perc_ethnic | 0, 
+                          data = barri73_lat)
+
+logit_lat73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0 + perc_ethnic, 
+                          data = barri73_lat)
+
+
+stargazer(logit_lat73_control, logit_lat73_h2a, 
+          logit_lat73_h2b, 
+          logit_lat73_h3,
+          logit_lat73_full,
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               
+                               "University Population", "Unitary Households",
+                               
+                               "Avg Rent", "Bars per population", 
+                               "Cultural Equipment"),
+          column.labels=c("Control", "Economic Rest.",
+                          "Amenities", "Ethnic Support",  "Full"),
+          dep.var.labels = c("","","",""),
+          type = "html", out="logit_latino_73.html")
+
+
+## Europeans
+logit_euro73_control <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni | 0, 
+                              data = barri73_euro)
+
+logit_euro73_h2a <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 | 0, 
+                          data = barri73_euro)
+
+logit_euro73_h2b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + cultural_pop + bars + Time_bike_Barceloneta | 0, 
+                          data = barri73_euro)
+
+logit_euro73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni | 0 + perc_ethnic, 
+                           data = barri73_euro)
+
+logit_euro73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0 + perc_ethnic, 
+                           data = barri73_euro)
+
+
+stargazer(logit_euro73_control, logit_euro73_h2a, 
+          logit_euro73_h2b,
+          logit_euro73_h3,
+          logit_euro73_full,
+          covariate.labels = c("Avg Age of Building" , "Left Wing votes (municipal elections)",
+                               "Avg Rent", "Bars per population"),
+          column.labels=c("Control", "Economic Rest.",
+                          "Amenities", "Ethnic Support",  "Full"),
+          dep.var.labels = c("","","",""),
+          type = "html", out="logit_latino_73.html")
+
+
