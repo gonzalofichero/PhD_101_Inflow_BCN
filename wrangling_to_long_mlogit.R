@@ -422,8 +422,9 @@ logit_euro73_h2a <- mlogit(ind_choice ~ sum_old + age_building + perc_left + per
 logit_euro73_h2b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + cultural_pop + bars + Time_bike_Barceloneta | 0, 
                           data = barri73_euro)
 
-logit_euro73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni | 0 + perc_ethnic, 
+logit_euro73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni | perc_ethnic - 1, 
                          data = barri73_euro)
+# Having singularity problem with co-ethnic for Europeans...
 
 logit_euro73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0 + perc_ethnic, 
                            data = barri73_euro)
