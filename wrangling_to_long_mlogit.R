@@ -387,7 +387,7 @@ logit_lat73_h2a <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc
 logit_lat73_h2b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + cultural_pop + bars + Time_bike_Barceloneta | 0, 
                           data = barri73_lat)
 
-logit_lat73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 * perc_ethnic | 0, 
+logit_lat73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni | 0 + perc_ethnic, 
                           data = barri73_lat)
 
 logit_lat73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0 + perc_ethnic, 
