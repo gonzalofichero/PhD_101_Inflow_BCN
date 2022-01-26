@@ -26,17 +26,14 @@ bcn_map2 <- bcn_map %>% filter(SCONJ_DESC == "Barri") %>% select(DISTRICTE, BARR
 ####################################
 # Joining Airbnb data to Json
 airbnb_sf <- airbnb %>%
-  mutate_at(vars(longitude, latitude), as.numeric) %>%   # coordinates must be numeric
+  mutate_at(vars(latitude, longitude), as.numeric) %>%   # coordinates must be numeric
   st_as_sf(
-    coords = c("longitude", "latitude"),
+    coords = c("latitude", "longitude"),
     agr = "constant",
     crs = 25831,
     stringsAsFactors = FALSE,
     remove = TRUE
   )
-
-bcn_map3 <- bcn_map2 %>% st_transform(2263)
-
 
 air_full <- st_join(airbnb_sf, bcn_map2, join = st_within)
 
