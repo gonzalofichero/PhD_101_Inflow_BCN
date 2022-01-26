@@ -18,7 +18,7 @@ library(colorspace)
 
 bcn_map <- st_read("Maps/0301100100_UNITATS_ADM_POLIGONS.json")
 
-bcn_map2 <- bcn_map %>% filter(SCONJ_DESC == "Barri") %>% select(DISTRICTE, BARRI, CODI_UA,
+bcn_map2 <- bcn_map %>% filter(SCONJ_DESC == "Barri") %>% select(DISTRICTE, BARRI, NOM,
                                                                  geometry)
 
 
