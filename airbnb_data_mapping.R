@@ -30,10 +30,12 @@ airbnb_sf <- airbnb %>%
   st_as_sf(
     coords = c("latitude", "longitude"),
     agr = "constant",
-    crs = 25831,
+    crs = 25831 ,
     stringsAsFactors = FALSE,
     remove = TRUE
   )
+
+#bcn_map3 <- bcn_map2 %>% st_transform(4326)
 
 air_full <- st_join(airbnb_sf, bcn_map2, join = st_within)
 
