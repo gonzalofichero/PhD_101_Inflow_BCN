@@ -36,3 +36,16 @@ air_full <- st_join(airbnb_sf, bcn_map2, join = st_within)
 air_per_barri <- count(as_tibble(air_full), BARRI) %>% rename(airbnbs = n)
 
 
+##############################################
+# Plot in map amount of Airbnbs per Barri
+bcn_map %>% 
+  filter(SCONJ_DESC == "Barri") %>% 
+  left_join(air_per_barri, by = "BARRI") %>%
+  ggplot() +
+  geom_sf(aes(fill = airbnbs))
+
+
+
+
+
+
