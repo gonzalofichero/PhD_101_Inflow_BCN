@@ -35,7 +35,11 @@ bcn %>%
 bcn2 %>% 
   left_join(ethnic_composition, by = c("BARRI_COD", "NOM_Naix")) %>% 
   left_join(cultural_barri, by = "BARRI_COD") %>% 
-  left_join(beach, by = "BARRI_COD") -> bcn3
+  left_join(beach, by = "BARRI_COD") %>% 
+  left_join(amenities_pca, by = "BARRI_COD") %>% 
+  left_join(air_per_barri, by = "BARRI_COD") %>% 
+  mutate(bars_pop = bars / Poblacio,
+         airbnb_dom = airbnbs / Domicilis) -> bcn3
               
 
 
@@ -53,12 +57,14 @@ bcn_original <- bcn3 %>%
                   filter(NOM == BARRI_AGRUP_TONI) %>% 
                   select(Any, Sexe, BARRI_COD, nation, NOM_Naix,
                          ind_inflow, BARRI_AGRUP_TONI,
-                         Poblacio, income, mesas, bars,
+                         Poblacio, Domicilis, income, mesas, bars,
                          age_building, size_barri_m2,
                          perc_left, perc_indep, excess_uni, perc_domi_uni_25_40,
                          Cinemas, Teatres, avg_rent_2015, sum_old,
                          perc_ethnic, cultural_pop, Time_bike_Barceloneta,
-                         dist_bike_barceloneta
+                         dist_bike_barceloneta,
+                         amenities_pc, airbnbs,
+                         bars_pop, airbnb_dom
                          )
 
 # Barris that have to be grouped
@@ -68,12 +74,13 @@ bcn_toni <- bcn3 %>%
 
 
 bcn_toni %>% 
-  select(NOM, BARRI_AGRUP_TONI, Poblacio, 
+  select(NOM, BARRI_AGRUP_TONI, Poblacio, Domicilis, 
          income, mesas, bars, age_building, median_size_flat,
          size_barri_m2, perc_left, perc_indep, excess_uni,
          perc_domi_uni_25_40, Cinemas, Teatres, avg_rent_2015,
          sum_old, perc_ethnic, cultural_pop, Time_bike_Barceloneta,
-         dist_bike_barceloneta) %>% 
+         dist_bike_barceloneta, amenities_pc, airbnbs,
+         bars_pop, airbnb_dom) %>% 
   #select(NOM, BARRI_AGRUP_TONI, Poblacio) %>% 
   unique() -> barris_toni
   
@@ -99,7 +106,12 @@ barris_toni %>%
     cultural_pop = weighted.mean(cultural_pop,Poblacio),
     Time_bike_Barceloneta = weighted.mean(Time_bike_Barceloneta,Poblacio),
     dist_bike_barceloneta = weighted.mean(dist_bike_barceloneta,Poblacio),
+    amenities_pc = weighted.mean(amenities_pc,Poblacio),
+    airbnb_dom = sum(airbnbs) / sum(Domicilis),
+    airbnbs = sum(airbnbs),
+    bars_pop = sum(bars) / sum(Poblacio),
     Poblacio = sum(Poblacio),
+    Domicilis = sum(Domicilis)
     ) %>% 
   ungroup() -> bcn_toni_grouped
 
