@@ -177,7 +177,8 @@ indiv73 %>%
                      excess_uni, perc_domi_uni_25_40,
                      avg_rent_2015, sum_old,
                      cultural_pop, Time_bike_Barceloneta,
-                     dist_bike_barceloneta
+                     dist_bike_barceloneta,
+                     amenities_pc, airbnb_dom, airbnbs, bars_pop
                      ) %>% 
               unique(),
             by = "BARRI_COD"
@@ -257,7 +258,8 @@ indiv69 %>%
                      excess_uni, perc_domi_uni_25_40,
                      avg_rent_2015, sum_old,
                      cultural_pop, Time_bike_Barceloneta,
-                     dist_bike_barceloneta) %>% 
+                     dist_bike_barceloneta,
+                     amenities_pc, airbnb_dom, airbnbs, bars_pop) %>% 
               distinct(),
             by = "BARRI_COD"
   ) -> indiv_barri69
