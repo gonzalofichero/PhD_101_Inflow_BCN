@@ -33,7 +33,8 @@ airbnb_sf <- airbnb %>%
 
 air_full <- st_join(airbnb_sf, bcn_map2, join = st_within)
 
-air_per_barri <- count(as_tibble(air_full), BARRI) %>% rename(airbnbs = n)
+air_per_barri <- count(as_tibble(air_full), BARRI) %>% rename(airbnbs = n,
+                                                              BARRI_COD = BARRI)
 
 
 ##############################################
