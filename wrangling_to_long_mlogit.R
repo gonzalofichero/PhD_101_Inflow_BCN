@@ -371,15 +371,9 @@ indiv_barri73 <- read_delim("mlogit_bcn73_full.txt",
                   delim = "|", col_names = TRUE)
 
 
-# Adding 2 more features: PCA for amenities + Airbnb data
-indiv_barri73 %>% 
-  left_join(amenities_pca, by = "BARRI_COD") %>% 
-  left_join(air_per_barri, by = "BARRI_COD") -> indiv_barri73_bis
-
-
 # Splitting into Europeans and Latinos
-barri73_lat <- indiv_barri73_bis %>% filter(nation == "Latino")
-barri73_euro <- indiv_barri73_bis %>% filter(nation == "European")
+barri73_lat <- indiv_barri73 %>% filter(nation == "Latino")
+barri73_euro <- indiv_barri73 %>% filter(nation == "European")
 
 
 # Running 4 regressions for both groups
