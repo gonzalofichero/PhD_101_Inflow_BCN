@@ -66,7 +66,7 @@ ggbiplot(pc,
 
 
 # Extract first factor
-pc$x[,1]
+amenities_pca <- cbind(data_barri2$BARRI_COD,pc$x[,1])
 
 
 
