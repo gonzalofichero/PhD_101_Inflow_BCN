@@ -66,7 +66,10 @@ ggbiplot(pc,
 
 
 # Extract first factor
-amenities_pca <- cbind(data_barri2$BARRI_COD,pc$x[,1])
+amenities_pca <- data.frame(cbind(data_barri2$BARRI_COD,pc$x[,1])) %>% 
+                  rename(BARRI_COD = X1,
+                         amenities_pc = X2) %>% 
+                  mutate(amenities_pc = as.double(amenities_pc))
 
 
 
