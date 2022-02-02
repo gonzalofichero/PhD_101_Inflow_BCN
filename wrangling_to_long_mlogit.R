@@ -372,7 +372,7 @@ indiv_barri73 <- read_delim("mlogit_bcn73_full.txt",
 
 
 # Splitting into Europeans and Latinos
-barri73_lat <- indiv_barri73 %>% filter(nation == "Latino", NOM_Naix != "Resta América")
+barri73_lat <- indiv_barri73 %>% filter(nation == "Latino", !is.na(perc_ethnic))
 barri73_euro <- indiv_barri73 %>% filter(nation == "European", !is.na(perc_ethnic))
 
 
