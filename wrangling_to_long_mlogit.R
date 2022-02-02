@@ -507,7 +507,7 @@ stargazer(logit_euro73_control, logit_euro73_h2a,
 
 stargazer(logit_euro73_control, logit_euro73_h2a, 
           logit_euro73_h2b_pca, 
-          logit_euro73_h3,
+          #logit_euro73_h3,
           logit_euro73_full_pca,
           covariate.labels = c("Avg Age in Padron",
                                "Avg Age of Building",
