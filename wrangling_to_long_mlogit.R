@@ -470,14 +470,14 @@ logit_euro73_h2b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + per
 logit_euro73_h2b_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + amenities_pc | 0, 
                            data = barri73_euro)
 
-logit_euro73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs | 0 + perc_ethnic, 
+logit_euro73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs | perc_ethnic, 
                          data = barri73_euro)
 # Having singularity problem with co-ethnic for Europeans...
 
-logit_euro73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0 + perc_ethnic, 
+logit_euro73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
                            data = barri73_euro)
 
-logit_euro73_full_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + amenities_pc | 0 + perc_ethnic, 
+logit_euro73_full_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + amenities_pc | 0, 
                             data = barri73_euro)
 
 
@@ -485,7 +485,7 @@ logit_euro73_full_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left 
 
 stargazer(logit_euro73_control, logit_euro73_h2a, 
           logit_euro73_h2b, 
-          logit_euro73_h3,
+          #logit_euro73_h3,
           logit_euro73_full,
           covariate.labels = c("Avg Age in Padron",
                                "Avg Age of Building",
@@ -496,9 +496,12 @@ stargazer(logit_euro73_control, logit_euro73_h2a,
                                "Cultural Equipment", "Bars per population", "Distance to beach", 
                                "%co-ethnic component by barri"
           ),
+          # column.labels=c("Control", "Economic Rest.",
+          #                 "Amenities", "Ethnic Support", "Full"),
+          # dep.var.labels = c("","","","",""),
           column.labels=c("Control", "Economic Rest.",
-                          "Amenities", "Ethnic Support", "Full"),
-          dep.var.labels = c("","","","",""),
+                          "Amenities", "Full"),
+          dep.var.labels = c("","","",""),
           type = "html", out="logit_euro_73.html")
 
 
@@ -515,7 +518,10 @@ stargazer(logit_euro73_control, logit_euro73_h2a,
                                "Amenities", 
                                "%co-ethnic component by barri"
           ),
+          # column.labels=c("Control", "Economic Rest.",
+          #                 "Amenities", "Ethnic Support", "Full"),
+          # dep.var.labels = c("","","","",""),
           column.labels=c("Control", "Economic Rest.",
-                          "Amenities", "Ethnic Support", "Full"),
-          dep.var.labels = c("","","","",""),
+                          "Amenities", "Full"),
+          dep.var.labels = c("","","",""),
           type = "html", out="logit_euro_73_pca.html")
