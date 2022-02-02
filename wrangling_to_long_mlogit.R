@@ -371,9 +371,27 @@ indiv_barri73 <- read_delim("mlogit_bcn73_full.txt",
                   delim = "|", col_names = TRUE)
 
 
+
+#############################
+# CHECK: NAs in Airbnb data
+
+indiv_barri73 %>% 
+  filter(is.na(airbnbs))  %>% 
+  group_by(BARRI_COD) %>% 
+  summarise(counts = n())
+
+# Barri 56 coming with NAs, when should be 6...
+# Fixing now with a not very subtle solution, then I'll check up why coming like this
+
+indiv_barri73 %>% 
+  mutate(airbnbs = case_when(BARRI_COD == "56"  ~ 6,
+                             TRUE ~ airbnbs)) ->  indiv_barri73_fixed
+
+
 # Splitting into Europeans and Latinos
-barri73_lat <- indiv_barri73 %>% filter(nation == "Latino", !is.na(perc_ethnic))
-barri73_euro <- indiv_barri73 %>% filter(nation == "European", !is.na(perc_ethnic))
+barri73_lat <- indiv_barri73_fixed %>% filter(nation == "Latino", !is.na(perc_ethnic))
+barri73_euro <- indiv_barri73_fixed %>% filter(nation == "European", !is.na(perc_ethnic))
+
 
 
 # Running 4 regressions for both groups
