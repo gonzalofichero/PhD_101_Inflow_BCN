@@ -557,12 +557,22 @@ sample_euro73 <- barri73_euro %>% filter(sampling < 0.5)
 
 print(Sys.time())
 mlogit_lat73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
-                             data = sample_lat73)
+                             data = sample_lat73,
+                            rpar = c(sum_old = "n", age_building = "n", perc_left = "n",
+                                     perc_domi_uni_25_40 = "n", excess_uni = "n", airbnbs = "n",
+                                     avg_rent_2015 = "n", 
+                                     cultural_pop = "n", bars = "n", Time_bike_Barceloneta = "n"),
+                            correlation = TRUE, R = 100, halton = NA)
 print(Sys.time())
 
 
 print(Sys.time())
 mlogit_euro73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
-                            data = sample_euro73)
+                            data = sample_euro73,
+                            rpar = c(sum_old = "n", age_building = "n", perc_left = "n",
+                                     perc_domi_uni_25_40 = "n", excess_uni = "n", airbnbs = "n",
+                                     avg_rent_2015 = "n", 
+                                     cultural_pop = "n", bars = "n", Time_bike_Barceloneta = "n"),
+                            correlation = TRUE, R = 100, halton = NA)
 print(Sys.time())
 
