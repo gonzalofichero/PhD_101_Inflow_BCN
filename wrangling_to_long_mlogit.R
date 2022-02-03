@@ -564,6 +564,11 @@ mlogit_lat73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + pe
                                      cultural_pop = "n", bars = "n", Time_bike_Barceloneta = "n"),
                             correlation = TRUE, R = 100, halton = NA)
 print(Sys.time())
+## 21' with full model, no H3, 1/3 Latin data
+
+# Correlation matrix for features in regression
+cor.mlogit(mlogit_lat73_full)
+
 
 
 print(Sys.time())
@@ -575,4 +580,9 @@ mlogit_euro73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + p
                                      cultural_pop = "n", bars = "n", Time_bike_Barceloneta = "n"),
                             correlation = TRUE, R = 100, halton = NA)
 print(Sys.time())
+## 22' with full model, no H3, 1/2 Europe data
+
+# Correlation matrix for features in regression
+cor.mlogit(mlogit_euro73_full)
+
 
