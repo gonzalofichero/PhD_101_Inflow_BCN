@@ -540,3 +540,29 @@ stargazer(logit_euro73_control, logit_euro73_h2a,
                           "Amenities", "Full"),
           dep.var.labels = c("","","",""),
           type = "html", out="logit_euro_73_pca.html")
+
+
+
+##############################
+# MIXED LOGIT MODELS
+# Full model without H3
+
+
+# Generating samples from full df
+sample_lat73 <- barri73_lat %>% filter(sampling <= 0.33)
+sample_euro73 <- barri73_euro %>% filter(sampling < 0.5)
+
+
+# Adding timestamps in the run to analyze timing
+
+print(Sys.time())
+mlogit_lat73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
+                             data = sample_lat73)
+print(Sys.time())
+
+
+print(Sys.time())
+mlogit_euro73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
+                            data = sample_euro73)
+print(Sys.time())
+
