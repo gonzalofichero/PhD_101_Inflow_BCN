@@ -117,12 +117,12 @@ ggbiplot(pc_control,
 
 
 # Extract first factor
-amenities_pca <- data.frame(cbind(data_barri2$BARRI_COD,pc_control$x[,1:3])) %>% 
-  rename(BARRI_COD = X1,
-         control_pca_factor1 = X2,
-         control_pca_factor2 = X3,
-         control_pca_factor3 = X4) %>% 
-  mutate(control_pca_factor1 = as.double(control_pca_factor1),
-         control_pca_factor2 = as.double(control_pca_factor2),
-         control_pca_factor3 = as.double(control_pca_factor3))
+control_vars_pca <- data.frame(cbind(data_barri2$BARRI_COD,pc_control$x[,1:3])) %>% 
+                    dplyr::rename(BARRI_COD = V1,
+                           control_pca_factor1 = PC1,
+                           control_pca_factor2 = PC2,
+                           control_pca_factor3 = PC3) %>% 
+                    mutate(control_pca_factor1 = as.double(control_pca_factor1),
+                           control_pca_factor2 = as.double(control_pca_factor2),
+                           control_pca_factor3 = as.double(control_pca_factor3))
 
