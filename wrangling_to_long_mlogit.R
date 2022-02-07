@@ -570,6 +570,21 @@ print(Sys.time())
 cor.mlogit(mlogit_lat73_full)
 
 
+stargazer(mlogit_lat73_full,
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               "Unitary Households", "University Population",
+                               "#Airbnb's",
+                               "Avg Rent", 
+                               "Cultural Equipment", "Bars per population", "Distance to beach"
+          ),
+          column.labels=c("Mixed Logit"),
+          dep.var.labels = c(""),
+          type = "html", out="logit_lat_73_mixed.html")
+
+
+
 
 print(Sys.time())
 mlogit_euro73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
@@ -586,3 +601,15 @@ print(Sys.time())
 cor.mlogit(mlogit_euro73_full)
 
 
+stargazer(mlogit_euro73_full,
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               "Unitary Households", "University Population",
+                               "#Airbnb's",
+                               "Avg Rent", 
+                               "Cultural Equipment", "Bars per population", "Distance to beach"
+          ),
+          column.labels=c("Mixed Logit"),
+          dep.var.labels = c(""),
+          type = "html", out="logit_euro_73_mixed.html")
