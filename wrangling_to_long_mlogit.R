@@ -632,7 +632,7 @@ mlogit_lat73_full_noairbnb <- mlogit(ind_choice ~ sum_old + age_building + perc_
                                                cultural_pop = "n", bars = "n", Time_bike_Barceloneta = "n"),
                                       correlation = TRUE, R = 100, halton = NA)
 print(Sys.time())
-## 21' with full model, no H3, 1/3 Latin data
+## 2horas 10' with full model, no H3 no Airbnb, 1/3 Latin data
 
 # Correlation matrix for features in regression
 cor.mlogit(mlogit_lat73_full_noairbnb)
@@ -662,7 +662,7 @@ mlogit_euro73_full_noairbnb <- mlogit(ind_choice ~ sum_old + age_building + perc
                                                 cultural_pop = "n", bars = "n", Time_bike_Barceloneta = "n"),
                                        correlation = TRUE, R = 100, halton = NA)
 print(Sys.time())
-## 22' with full model, no H3, 1/2 Europe data
+## 25 minutos with full model, no H3 no Airbnb, 1/2 Europe data
 
 # Correlation matrix for features in regression
 cor.mlogit(mlogit_euro73_full_noairbnb)
