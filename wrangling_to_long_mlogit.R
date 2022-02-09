@@ -655,14 +655,14 @@ stargazer(mlogit_lat73_full_noairbnb,
 
 print(Sys.time())
 mlogit_euro73_full_noairbnb <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
-                                       data = sample_euro73,
+                                       data = barri73_euro,
                                        rpar = c(sum_old = "n", age_building = "n", perc_left = "n",
                                                 perc_domi_uni_25_40 = "n", excess_uni = "n",
                                                 avg_rent_2015 = "n", 
                                                 cultural_pop = "n", bars = "n", Time_bike_Barceloneta = "n"),
                                        correlation = TRUE, R = 100, halton = NA)
 print(Sys.time())
-## 25 minutos with full model, no H3 no Airbnb, 1/2 Europe data
+## 3horas 17 minutos with full model, no H3 no Airbnb, 100% Europe data
 
 # Correlation matrix for features in regression
 cor.mlogit(mlogit_euro73_full_noairbnb)
