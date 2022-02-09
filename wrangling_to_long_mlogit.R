@@ -613,3 +613,69 @@ stargazer(mlogit_euro73_full,
           column.labels=c("Mixed Logit"),
           dep.var.labels = c(""),
           type = "html", out="logit_euro_73_mixed.html")
+
+
+
+##############################
+# MIXED LOGIT MODELS
+# Full model without H3 and taking out Airbnb data (chekcing confounding)
+
+
+# Adding timestamps in the run to analyze timing
+
+print(Sys.time())
+mlogit_lat73_full_noairbnb <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
+                                      data = barri73_lat,
+                                      rpar = c(sum_old = "n", age_building = "n", perc_left = "n",
+                                               perc_domi_uni_25_40 = "n", excess_uni = "n",
+                                               avg_rent_2015 = "n", 
+                                               cultural_pop = "n", bars = "n", Time_bike_Barceloneta = "n"),
+                                      correlation = TRUE, R = 100, halton = NA)
+print(Sys.time())
+## 21' with full model, no H3, 1/3 Latin data
+
+# Correlation matrix for features in regression
+cor.mlogit(mlogit_lat73_full_noairbnb)
+
+
+stargazer(mlogit_lat73_full_noairbnb,
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               "Unitary Households", "University Population",
+                               "Avg Rent", 
+                               "Cultural Equipment", "Bars per population", "Distance to beach"
+          ),
+          column.labels=c("Mixed Logit"),
+          dep.var.labels = c(""),
+          type = "html", out="logit_lat_73_mixed_noAir.html")
+
+
+
+
+print(Sys.time())
+mlogit_euro73_full_noairbnb <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
+                                       data = barri73_euro,
+                                       rpar = c(sum_old = "n", age_building = "n", perc_left = "n",
+                                                perc_domi_uni_25_40 = "n", excess_uni = "n",
+                                                avg_rent_2015 = "n", 
+                                                cultural_pop = "n", bars = "n", Time_bike_Barceloneta = "n"),
+                                       correlation = TRUE, R = 100, halton = NA)
+print(Sys.time())
+## 22' with full model, no H3, 1/2 Europe data
+
+# Correlation matrix for features in regression
+cor.mlogit(mlogit_euro73_full_noairbnb)
+
+
+stargazer(mlogit_euro73_full_noairbnb,
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               "Unitary Households", "University Population",
+                               "Avg Rent", 
+                               "Cultural Equipment", "Bars per population", "Distance to beach"
+          ),
+          column.labels=c("Mixed Logit"),
+          dep.var.labels = c(""),
+          type = "html", out="logit_euro_73_mixed_noAir.html")
