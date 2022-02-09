@@ -625,7 +625,7 @@ stargazer(mlogit_euro73_full,
 
 print(Sys.time())
 mlogit_lat73_full_noairbnb <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
-                                      data = barri73_lat,
+                                      data = sample_lat73,
                                       rpar = c(sum_old = "n", age_building = "n", perc_left = "n",
                                                perc_domi_uni_25_40 = "n", excess_uni = "n",
                                                avg_rent_2015 = "n", 
@@ -655,7 +655,7 @@ stargazer(mlogit_lat73_full_noairbnb,
 
 print(Sys.time())
 mlogit_euro73_full_noairbnb <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
-                                       data = barri73_euro,
+                                       data = sample_euro73,
                                        rpar = c(sum_old = "n", age_building = "n", perc_left = "n",
                                                 perc_domi_uni_25_40 = "n", excess_uni = "n",
                                                 avg_rent_2015 = "n", 
