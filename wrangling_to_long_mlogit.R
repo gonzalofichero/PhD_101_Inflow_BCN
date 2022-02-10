@@ -766,3 +766,22 @@ stargazer(nb_euro73_control, nb_euro73_h2a,
                           "Amenities", "Full"),
           dep.var.labels = c("","","",""),
           type = "html", out="nb_euro_73_full.html")
+
+
+##### Interaction term #####
+nb_both73_full <- glm.nb(inflow ~ sum_old + age_building + avg_rent_2015 * nation + amenities_pc * nation,
+                         data = barri73_fixed_full_inflow)
+
+
+stargazer(nb_both73_full,
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Avg Rent",
+                               "Being Latino",
+                               "Amenities",
+                               "Avg Rent * Latino",
+                               "Amenities * Latino"
+                               ),
+          column.labels=c("Full"),
+          dep.var.labels = c(""),
+          type = "html", out="nb_both_73_full_interaction.html")
