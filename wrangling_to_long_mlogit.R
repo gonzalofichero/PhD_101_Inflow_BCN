@@ -675,3 +675,94 @@ stargazer(mlogit_euro73_full_noairbnb,
           column.labels=c("Mixed Logit"),
           dep.var.labels = c(""),
           type = "html", out="logit_euro_73_mixed_noAir.html")
+
+
+##################################################
+# Re-Running aggregated data
+
+# Aggregating 
+indiv_barri73_fixed %>% 
+  select(BARRI_COD,sum_old,age_building,perc_left,perc_domi_uni_25_40,
+         excess_uni,avg_rent_2015, cultural_pop,
+         bars_pop,
+         airbnb_dom,
+         Time_bike_Barceloneta,
+         amenities_pc) %>% 
+  unique() -> barri73_fixed_features
+
+
+indiv_barri73_fixed %>% 
+  select(BARRI_COD,nation,ind_choice,perc_ethnic) %>%
+  group_by(BARRI_COD,nation) %>% 
+  summarise(inflow = sum(ind_choice, na.rm = T),
+            avg_ethnic = mean(perc_ethnic, na.rm = T)) %>% 
+  ungroup() -> barri73_fixed_inflow
+
+
+barri73_fixed_full_inflow <- barri73_fixed_inflow %>% 
+                              left_join(barri73_fixed_features, by="BARRI_COD")
+
+barri73_fixed_full_inflow %>% filter(nation == "Latino") -> barri73_fixed_full_inflow_latino
+barri73_fixed_full_inflow %>% filter(nation == "European") -> barri73_fixed_full_inflow_european
+
+# Library for Negative Binomial regression
+library(MASS)
+
+
+##### Latino inflow #####
+nb_lat73_control <- glm.nb(inflow ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni,
+                            data = barri73_fixed_full_inflow_latino)
+
+nb_lat73_h2a <- glm.nb(inflow ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015,
+                           data = barri73_fixed_full_inflow_latino)
+
+nb_lat73_h2b <- glm.nb(inflow ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + amenities_pc,
+                           data = barri73_fixed_full_inflow_latino)
+
+nb_lat73_full <- glm.nb(inflow ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + amenities_pc,
+                           data = barri73_fixed_full_inflow_latino)
+
+
+stargazer(nb_lat73_control, nb_lat73_h2a,
+          nb_lat73_h2b, nb_lat73_full,
+          
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               "Unitary Households", "University Population",
+                               "Avg Rent", 
+                               "Amenities"),
+          column.labels=c("Control", "Economic Rest.",
+                          "Amenities", "Full"),
+          dep.var.labels = c("","","",""),
+          type = "html", out="nb_lat_73_full.html")
+
+
+
+##### European inflow #####
+nb_euro73_control <- glm.nb(inflow ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni,
+                           data = barri73_fixed_full_inflow_european)
+
+nb_euro73_h2a <- glm.nb(inflow ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015,
+                       data = barri73_fixed_full_inflow_european)
+
+nb_euro73_h2b <- glm.nb(inflow ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + amenities_pc,
+                       data = barri73_fixed_full_inflow_european)
+
+nb_euro73_full <- glm.nb(inflow ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + amenities_pc,
+                        data = barri73_fixed_full_inflow_european)
+
+
+stargazer(nb_euro73_control, nb_euro73_h2a,
+          nb_euro73_h2b, nb_euro73_full,
+          
+          covariate.labels = c("Avg Age in Padron",
+                               "Avg Age of Building",
+                               "Left Wing votes (municipal elections)",
+                               "Unitary Households", "University Population",
+                               "Avg Rent", 
+                               "Amenities"),
+          column.labels=c("Control", "Economic Rest.",
+                          "Amenities", "Full"),
+          dep.var.labels = c("","","",""),
+          type = "html", out="nb_euro_73_full.html")
