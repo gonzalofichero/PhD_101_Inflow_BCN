@@ -397,31 +397,31 @@ barri73_euro <- indiv_barri73_fixed %>% filter(nation == "European", !is.na(perc
 # Running 4 regressions for both groups
 
 ## Latinos
-logit_lat73_control <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs | 0, 
+logit_lat73_control <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni | 0, 
                             data = barri73_lat)
 
-logit_lat73_h2a <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 | 0, 
+logit_lat73_h2a <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 | 0, 
                               data = barri73_lat)
 
-logit_lat73_h2b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + cultural_pop + bars + Time_bike_Barceloneta | 0, 
+logit_lat73_h2b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + cultural_pop + bars + Time_bike_Barceloneta | 0, 
                           data = barri73_lat)
 
-logit_lat73_h2b_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + amenities_pc | 0, 
+logit_lat73_h2b_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + amenities_pc | 0, 
                           data = barri73_lat)
 
-logit_lat73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs | 0 + perc_ethnic, 
+logit_lat73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni | 0 + perc_ethnic, 
                           data = barri73_lat)
 
-logit_lat73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0 + perc_ethnic, 
+logit_lat73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0 + perc_ethnic, 
                           data = barri73_lat)
 
-logit_lat73_full_comparable <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0 , 
+logit_lat73_full_comparable <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0 , 
                            data = barri73_lat)
 
-logit_lat73_full_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + amenities_pc | 0 + perc_ethnic, 
+logit_lat73_full_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + amenities_pc | 0 + perc_ethnic, 
                            data = barri73_lat)
 
-logit_lat73_full_pca_comparable <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + amenities_pc | 0 , 
+logit_lat73_full_pca_comparable <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + amenities_pc | 0 , 
                                data = barri73_lat)
 
 
@@ -441,7 +441,7 @@ stargazer(logit_lat73_control, logit_lat73_h2a,
           column.labels=c("Control", "Economic Rest.",
                           "Amenities", "Full"),
           dep.var.labels = c("","","",""),
-          type = "html", out="logit_latino_73_comparable.html")
+          type = "html", out="logit_latino_73_comparable_noAir.html")
           # column.labels=c("Control", "Economic Rest.",
           #                 "Amenities", "Ethnic Support", "Full"),
           # dep.var.labels = c("","","","",""),
@@ -464,7 +464,7 @@ stargazer(logit_lat73_control, logit_lat73_h2a,
           column.labels=c("Control", "Economic Rest.",
                           "Amenities", "Full"),
           dep.var.labels = c("","","",""),
-          type = "html", out="logit_latino_73_pca_comparable.html")
+          type = "html", out="logit_latino_73_pca_comparable_noAir.html")
           # column.labels=c("Control", "Economic Rest.",
           #                 "Amenities", "Ethnic Support", "Full"),
           # dep.var.labels = c("","","","",""),
@@ -472,27 +472,27 @@ stargazer(logit_lat73_control, logit_lat73_h2a,
 
 
 ## Europeans
-logit_euro73_control <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs | 0, 
+logit_euro73_control <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni | 0, 
                               data = barri73_euro)
 
-logit_euro73_h2a <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 | 0, 
+logit_euro73_h2a <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 | 0, 
                           data = barri73_euro)
 
-logit_euro73_h2b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + cultural_pop + bars + Time_bike_Barceloneta | 0, 
+logit_euro73_h2b <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + cultural_pop + bars + Time_bike_Barceloneta | 0, 
                           data = barri73_euro)
 
-logit_euro73_h2b_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + amenities_pc | 0, 
+logit_euro73_h2b_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + amenities_pc | 0, 
                            data = barri73_euro)
 
-logit_euro73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs | perc_ethnic, 
+logit_euro73_h3 <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni | perc_ethnic, 
                          data = barri73_euro)
 # Having singularity problem with co-ethnic for Europeans...
 
 
-logit_euro73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
+logit_euro73_full <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + cultural_pop + bars + Time_bike_Barceloneta | 0, 
                            data = barri73_euro)
 
-logit_euro73_full_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + airbnbs + avg_rent_2015 + amenities_pc | 0, 
+logit_euro73_full_pca <- mlogit(ind_choice ~ sum_old + age_building + perc_left + perc_domi_uni_25_40 + excess_uni + avg_rent_2015 + amenities_pc | 0, 
                             data = barri73_euro)
 
 
@@ -517,7 +517,7 @@ stargazer(logit_euro73_control, logit_euro73_h2a,
           column.labels=c("Control", "Economic Rest.",
                           "Amenities", "Full"),
           dep.var.labels = c("","","",""),
-          type = "html", out="logit_euro_73.html")
+          type = "html", out="logit_euro_73_noAir.html")
 
 
 stargazer(logit_euro73_control, logit_euro73_h2a, 
@@ -539,7 +539,7 @@ stargazer(logit_euro73_control, logit_euro73_h2a,
           column.labels=c("Control", "Economic Rest.",
                           "Amenities", "Full"),
           dep.var.labels = c("","","",""),
-          type = "html", out="logit_euro_73_pca.html")
+          type = "html", out="logit_euro_73_pca_noAir.html")
 
 
 
