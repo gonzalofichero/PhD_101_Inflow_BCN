@@ -117,8 +117,8 @@ ggbiplot(pc_transitority,
 # Extract first factor
 transitority_vars_pca <- data.frame(cbind(data_barri2$BARRI_COD,pc_transitority$x[,1])) %>% 
                                     dplyr::rename(BARRI_COD = X1,
-                                                   control_pca_factor1 = X2) %>% 
-                                    mutate(control_pca_factor1 = as.double(control_pca_factor1))
+                                                  transitory_pca = X2) %>% 
+                                    mutate(transitory_pca = as.double(transitory_pca))
 
 
 ###############################
