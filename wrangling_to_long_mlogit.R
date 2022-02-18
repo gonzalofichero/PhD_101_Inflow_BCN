@@ -388,9 +388,14 @@ indiv_barri73 %>%
                              TRUE ~ airbnbs)) ->  indiv_barri73_fixed
 
 
+
+##############################################
+# Modified 20220218
 # Splitting into Europeans and Latinos
-barri73_lat <- indiv_barri73_fixed %>% filter(nation == "Latino", !is.na(perc_ethnic))
-barri73_euro <- indiv_barri73_fixed %>% filter(nation == "European", !is.na(perc_ethnic))
+# Coming from last lines of "creating_additional_vars.R"
+
+barri73_lat <- indiv_barri73_20220218_final %>% filter(nation == "Latino", !is.na(perc_ethnic))
+barri73_euro <- indiv_barri73_20220218_final %>% filter(nation == "European", !is.na(perc_ethnic))
 
 
 
