@@ -78,8 +78,9 @@ amenities_pca <- data.frame(cbind(data_barri2$BARRI_COD,pc$x[,1])) %>%
 # PCA on transitority
 
 feature_transitority <- indiv_barri73_fixed %>% 
-                        select(sum_old, airbnbs) %>% 
-                        unique()
+                        select(sum_old, airbnb_dom) %>% 
+                        unique() %>% 
+                        mutate_if(is.numeric, ~replace_na(., 0))
 
 
 # Checking correlation
@@ -96,8 +97,8 @@ pc_transitority <- prcomp(feature_transitority,
 
 # Check factors
 summary(pc_transitority)
-# First 3 factors gets 90% of total variance...
-# I'm reducing to half the variables
+# 1 factor gets 85% of total variance...
+# I'm reducing to half the variables = higher factor means less transitority
 
 
 # Trying to understand what the factors are...
