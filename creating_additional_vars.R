@@ -102,3 +102,20 @@ beach %>%
 
 
 
+
+
+###################################################
+# Waiting to be last file 20200218, adding:
+# (1) more complete beach time feature (3 spots)
+# (2) PCA 1 factor for transitory variable = Airbnb + Avg Padron (>0 less transient population)
+# (3) exporting txt file
+
+indiv_barri73_fixed %>% 
+  select(-Time_bike_Barceloneta) %>% 
+  select(-dist_bike_barceloneta) %>% 
+  left_join(transitority_vars_pca, by = "BARRI_COD") %>% 
+  left_join(beach, by = "BARRI_COD") -> indiv_barri73_20220218_final
+
+
+write_delim(indiv_barri73_20220218_final, "indiv_barri73_final.txt", delim = "|")
+
