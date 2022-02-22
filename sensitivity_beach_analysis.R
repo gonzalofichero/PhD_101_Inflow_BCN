@@ -1,41 +1,58 @@
+# Loading necessary libraries
 library(tidyverse)
 library(mlogit)
 library(gmnl)
+library(psych)
+library(ggbiplot)
 
 
 ########################################################################
 # Taking a sample of full df + creating binary feature for nation group
 
 indiv_barri73_20220218_final %>%
-  #filter(sampling <= 0.05) %>% 
-  filter(!is.na(perc_ethnic)) %>% 
-  mutate(binary_nation = case_when(nation == "Latino" ~ 1,
-                                   TRUE ~ 0)) -> full_sample
+  select(BARRI_COD, bars_pop, cultural_pop, 
+         Time_bike_Barceloneta, Time_bike_Bogatell,
+         Time_bike_NovaMarBella, Min_Time)  %>% 
+  unique() -> amenities
 
 
-# Checking correlation
-library(psych)
-
-pairs.panels(amenities[,-1],
+# Checking correlation for Barceloneta
+pairs.panels(amenities[,c(2,3,4)],
              gap = 0,
              pch=21)
 
 
-pc <- prcomp(amenities[,-1],
-             center = TRUE,
-             scale. = TRUE)
+pca_barceloneta <- prcomp(amenities[,c(2,3,4)],
+                 center = TRUE,
+                 scale. = TRUE)
 
-attributes(pc)
+pca_bogatell <- prcomp(amenities[,c(2,3,5)],
+                          center = TRUE,
+                          scale. = TRUE)
+
+pca_novamarb <- prcomp(amenities[,c(2,3,6)],
+                          center = TRUE,
+                          scale. = TRUE)
+
+pca_mintime <- prcomp(amenities[,c(2,3,7)],
+                          center = TRUE,
+                          scale. = TRUE)
+
 
 # Check factors
-summary(pc)
-# 1st factor gets 2/3rds of total variance...
-# makes sense to use this method?
+summary(pca_barceloneta)
+summary(pca_bogatell)
+summary(pca_novamarb)
+summary(pca_mintime)
+
+# Barceloneta: 1st factor gets 66% of total variance
+# Bogatell: 1st factor gets 60% of total variance
+# NovaMarBella: 1st factor gets 55% of total variance
+# Min Time: 1st factor gets 63% of total variance
 
 
 # Trying to understand what the factors are...
-library(ggbiplot)
-ggbiplot(pc,
+ggbiplot(pca_mintime,
          obs.scale = 1,
          var.scale = 1,
          ellipse = TRUE,
@@ -47,10 +64,21 @@ ggbiplot(pc,
 
 
 # Extract first factor
-amenities_pca <- data.frame(cbind(data_barri2$BARRI_COD,pc$x[,1])) %>% 
-  rename(BARRI_COD = X1,
-         amenities_pc = X2) %>% 
-  mutate(amenities_pc = as.double(amenities_pc))
+amenities_pca <- data.frame(cbind(data_barri2$BARRI_COD,
+                            pca_barceloneta$x[,1],
+                            pca_bogatell$x[,1],
+                            pca_novamarb$x[,1],
+                            pca_mintime$x[,1]
+                            )) %>% 
+  dplyr::rename( BARRI_COD = X1,
+                 amenities_pca_barceloneta = X2,
+                 amenities_pca_bogatell = X3,
+                 amenities_pca_novamarb = X4,
+                 amenities_pca_mintime = X5) %>% 
+  mutate(amenities_pca_barceloneta = as.double(amenities_pca_barceloneta),
+         amenities_pca_bogatell = as.double(amenities_pca_bogatell),
+         amenities_pca_novamarb = as.double(amenities_pca_novamarb),
+         amenities_pca_mintime = as.double(amenities_pca_mintime))
 
 
 
