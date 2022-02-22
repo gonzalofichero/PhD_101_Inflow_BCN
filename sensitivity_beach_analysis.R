@@ -81,21 +81,27 @@ amenities_pca <- data.frame(cbind(data_barri2$BARRI_COD,
          amenities_pca_mintime = as.double(amenities_pca_mintime))
 
 
+###########################################
+# Joining to main dataframe
+
+indiv_barri73_20220218_final %>% 
+  select(-amenities_pc) %>% 
+  left_join(amenities_pca, by = "BARRI_COD") -> indiv_barri73_sensitity_beach
+
+
 
 ########################################################################
 # Creating mlogit.data file for gmnl package needs
 
-full_sample_73 <- mlogit.data(full_sample, shape = "long",
+full_beach_73 <- mlogit.data(indiv_barri73_sensitity_beach, shape = "long",
                               choice = "ind_choice")
 
+
 print(Sys.time())
-full_nation_73_interaction <- gmnl(formula = ind_choice ~ transitory_pca + avg_rent_2015 + amenities_pc - 1 | perc_ethnic + Sexe - 1 | 0 | binary_nation - 1,
-                                   data = full_sample_73,
-                                   model = "mixl",
-                                   ranp = c(avg_rent_2015 = "ln", amenities_pc = "n"),
-                                   mvar = list(avg_rent_2015 = c("binary_nation"),
-                                               amenities_pc = c("binary_nation")),
-                                   method = "bfgs",
-                                   R = 50
-)
-print(Sys.time())    
+full_beach_73_bogatell <- gmnl(formula = ind_choice ~ transitory_pca + avg_rent_2015 + amenities_pc - 1 | 0 | 0 | 0,
+                                   data = full_beach_73,
+                                   model = "mixl")
+print(Sys.time())
+
+
+
