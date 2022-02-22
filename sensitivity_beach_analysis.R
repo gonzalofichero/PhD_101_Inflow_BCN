@@ -4,6 +4,7 @@ library(mlogit)
 library(gmnl)
 library(psych)
 library(ggbiplot)
+library(stargazer)
 
 
 ########################################################################
@@ -96,12 +97,42 @@ indiv_barri73_20220218_final %>%
 full_beach_73 <- mlogit.data(indiv_barri73_sensitity_beach, shape = "long",
                               choice = "ind_choice")
 
-
+# Regression for Barceloneta
 print(Sys.time())
-full_beach_73_bogatell <- gmnl(formula = ind_choice ~ transitory_pca + avg_rent_2015 + amenities_pc - 1 | 0 | 0 | 0,
-                                   data = full_beach_73,
-                                   model = "mixl")
+full_beach_73_barceloneta <- mlogit(formula = ind_choice ~ transitory_pca + avg_rent_2015 + amenities_pca_barceloneta | 0 ,
+                                   data = full_beach_73)
 print(Sys.time())
 
+# Regression for Bogatell
+print(Sys.time())
+full_beach_73_bogatell <- mlogit(formula = ind_choice ~ transitory_pca + avg_rent_2015 + amenities_pca_bogatell | 0, 
+                                 data = full_beach_73)
+print(Sys.time())
+
+# Regression for NovaMarBella
+print(Sys.time())
+full_beach_73_novamarb <- mlogit(formula = ind_choice ~ transitory_pca + avg_rent_2015 + amenities_pca_novamarb | 0 ,
+                               data = full_beach_73)
+print(Sys.time())
+
+# Regression for Min Time to beach
+print(Sys.time())
+full_beach_73_mintime <- mlogit(formula = ind_choice ~ transitory_pca + avg_rent_2015 + amenities_pca_mintime | 0 ,
+                               data = full_beach_73)
+print(Sys.time())
+
+
+
+#####################################
+# Export results to stargazer table
+stargazer(full_beach_73_barceloneta, full_beach_73_bogatell, 
+          full_beach_73_novamarb, full_beach_73_mintime,
+          covariate.labels = c("PCA transitory",
+                               "Avg Rent",
+                               "PCA amenities","PCA amenities","PCA amenities","PCA amenities"),
+          column.labels=c("Barceloneta", "Bogatell", 
+                          "NovaMarBella", "MinTime"),
+          dep.var.labels = c("","","",""),
+          type = "html", out="beach_sensitivity.html")
 
 
