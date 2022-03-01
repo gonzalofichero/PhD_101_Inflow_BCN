@@ -14,7 +14,9 @@ bcn_map2 <- bcn_map %>% filter(SCONJ_DESC == "Barri")
 # Dataset with explanatory variables only (73 rows)
 bcn_full_neighbor <- indiv_barri73_sensitity_beach %>% 
                       select(BARRI_COD, transitory_pca, avg_rent_2015, amenities_pca_mintime) %>% 
-                      mutate(transitory_pca = (-1) * transitory_pca) %>% 
+                      mutate(transitory_pca = (-1) * transitory_pca,
+                             avg_rent_2015 = case_when(BARRI_COD == "47" ~ 8.14,
+                                                       TRUE ~ avg_rent_2015)) %>% 
                       rename(BARRI = BARRI_COD) %>% 
                       unique()
 
