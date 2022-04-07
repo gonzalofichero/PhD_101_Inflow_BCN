@@ -96,9 +96,12 @@ indiv_homes %>%
          education = case_when(P16 %in% c("Post-universitaris: màster, postgrau, doctorat", 
                                           "Universitaris: graus, diplomatura, llicenciatura") ~ "High-skilled",
                                TRUE ~ "Low-skilled"),
-         padron = case_when(P11 == "Sí" | P12 == "A Barcelona, a un altre habitatge" ~ "Padron correct",
-                            P11 == "No" | P12 == "En un municipi fora d'Espanya" ~ "Padron Foreign",
-                            TRUE ~ "Padron NO correct")) -> padrones 
+         padron = case_when(P11 == "Sí" ~ "Barcelona, at current residence",
+                            P12 == "A Barcelona, a un altre habitatge" ~ "Barcelona, at another residence",
+                            P12 == "En un municipi de Catalunya" |  P12 == "En un municipi de la resta d'Espanya" ~ "Rest of Spain",
+                            P11 == "No" & P12 == "En un municipi fora d'Espanya" ~ "Foreign residence",
+                            P11 == "No" & P12 == "No contesta" ~ "No answer",
+                            TRUE ~ "No answer")) -> padrones 
 
 # Faltas en Registro por Nation
 prop.table(table(padrones$padron, padrones$nation),2)
